@@ -30,6 +30,7 @@ public class libraryServer {
                 ss.addMovie(movie);
                 ss.addMovie(movie2);
                 ss.addGame(game);
+                ss.addAudioBook(audiobook);
 
 
                 // Optionally, output the objects to verify they've been read correctly
@@ -75,6 +76,17 @@ public class libraryServer {
                     System.out.println("RECEIVED: " + message);
                     if(message.equals("book")){
                         sendABook(ss.books.get(0), clientSocket);
+                        ss.removeBook(ss.books.get(0));
+                    }else if(message.equals("movie")) {
+                        sendAMovie(ss.movies.get(0), clientSocket);
+                        ss.removeMovie(ss.movies.get(0));
+                    } else if(message.equals("game")) {
+                        sendAGame(ss.games.get(0), clientSocket);
+                        ss.removeGame(ss.games.get(0));
+                    }
+                    else if (message.equals("audiobook")) {
+                        sendAAudioBook(ss.audioBooks.get(0), clientSocket);
+                        ss.removeAudioBook(ss.audioBooks.get(0));
                     }
                     System.out.println(clientSocket.getInetAddress());
                     writer.println(message);
@@ -90,6 +102,37 @@ public class libraryServer {
         ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream());
         oos.writeObject(book);
         oos.flush();
+    }
+    public void sendAMovie(Movie movie, Socket clientSocket) throws IOException {
+        ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream());
+        oos.writeObject(movie);
+        oos.flush();
+    }
+    public void sendAGame(Game game, Socket clientSocket) throws IOException {
+        ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream());
+        oos.writeObject(game);
+        oos.flush();
+    }
+    public void sendAAudioBook(AudioBooks audioBooks, Socket clientSocket) throws IOException {
+        ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream());
+        oos.writeObject(audioBooks);
+        oos.flush();
+    }
+    public Book recieveABook(Socket socket) throws IOException, ClassNotFoundException {
+        Book book = (Book)(new ObjectInputStream(socket.getInputStream()).readObject());
+        return book;
+    }
+    public Movie recieveAMovie(Socket socket) throws IOException, ClassNotFoundException {
+        Movie movie = (Movie)(new ObjectInputStream(socket.getInputStream()).readObject());
+        return movie;
+    }
+    public Game recieveAGame(Socket socket) throws IOException, ClassNotFoundException {
+        Game game = (Game)(new ObjectInputStream(socket.getInputStream()).readObject());
+        return game;
+    }
+    public AudioBooks recieveAudioBooks(Socket socket) throws IOException, ClassNotFoundException {
+        AudioBooks audioBooks = (AudioBooks)(new ObjectInputStream(socket.getInputStream()).readObject());
+        return audioBooks;
     }
 }
 class Book implements Serializable {
@@ -137,9 +180,22 @@ class Game implements Serializable {
     }
 
 }
-class AudioBooks extends Book implements Serializable{
+class AudioBooks implements Serializable{
+
+    private String title;
+    private String author;
+    private int pages;
+    private String summary;
 
     public AudioBooks(String title, String author, int pages, String summary) {
-        super(title, author, pages, summary);
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.summary = summary;
+    }
+
+    @Override
+    public String toString() {
+        return this.title + " : " + this.author;
     }
 }
