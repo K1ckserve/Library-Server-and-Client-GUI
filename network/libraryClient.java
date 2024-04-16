@@ -12,32 +12,35 @@ public class libraryClient {
     private void setupNetworking() {
         clientStorage cs = new clientStorage();
         try {
-            Socket socket = new Socket("10.145.13.97", 1025);
+            Socket socket = new Socket("10.154.244.220", 1025);
             System.out.println("network established");
             PrintWriter writer = new PrintWriter(socket.getOutputStream());
             //BufferedReader reader = new BufferedReader((new InputStreamReader(socket.getInputStream())));
-            Thread objReader = new Thread(new serverHandler(socket,cs));
+            Thread objReader = new Thread(new reciever (socket,cs));
             objReader.start();
             Scanner scanner = new Scanner(System.in);
             while (true) {
                 String input = scanner.nextLine();
-                writer.println(input);
-                writer.flush();
+                if(input.equals("send")){
+                    writer.println("object");
+                    writer.flush();
+                    sendABook(cs.books.get(0), socket);
+                }else {
+                    writer.println("message");
+                    writer.flush();
+                    writer.println(input);
+                    writer.flush();
+                }
             }
-
-//            Book book = new Book("Moby Dick", "Herman Melville", 1, "jfkdj");
-//            ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-//            oos.writeObject(book);
-//            oos.flush();
 
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
     }
-    class serverHandler implements Runnable {
+    class reciever implements Runnable {
         Socket socket;
         clientStorage cs;
-        public serverHandler (Socket socket, clientStorage cs) throws IOException {
+        public reciever (Socket socket, clientStorage cs) throws IOException {
             this.socket = socket;
             this.cs = cs;
         }

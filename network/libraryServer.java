@@ -55,6 +55,8 @@ public class libraryServer {
 
                 Thread t = new Thread(new ClientHandler(clientSocket, ss));
                 t.start();
+//                Thread s = new Thread(new serverReciever(clientSocket, ss));
+//                s.start();
             }
         } catch (IOException ioe) {}
     }
@@ -63,38 +65,62 @@ public class libraryServer {
 
         private Socket clientSocket;
         private serverStorage ss;
+
         ClientHandler(Socket clientSocket, serverStorage ss) {
             this.clientSocket = clientSocket;
             this.ss = ss;
         }
+
         public void run() {
             try {
                 PrintWriter writer = new PrintWriter(clientSocket.getOutputStream());
                 BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                String message;
-                while ((message = reader.readLine()) != null) {
-                    System.out.println("RECEIVED: " + message);
-                    if(message.equals("book")){
-                        sendABook(ss.books.get(0), clientSocket);
-                        ss.removeBook(ss.books.get(0));
-                    }else if(message.equals("movie")) {
-                        sendAMovie(ss.movies.get(0), clientSocket);
-                        ss.removeMovie(ss.movies.get(0));
-                    } else if(message.equals("game")) {
-                        sendAGame(ss.games.get(0), clientSocket);
-                        ss.removeGame(ss.games.get(0));
+                String datatype;
+                while ((datatype = reader.readLine()) != null) {
+                    if (datatype.equals("message")) {
+                        String message = reader.readLine();
+                        System.out.println("RECEIVED: " + message);
+                        if (message.equals("book")) {
+                            sendABook(ss.books.get(0), clientSocket);
+                            ss.removeBook(ss.books.get(0));
+                        } else if (message.equals("movie")) {
+                            sendAMovie(ss.movies.get(0), clientSocket);
+                            ss.removeMovie(ss.movies.get(0));
+                        } else if (message.equals("game")) {
+                            sendAGame(ss.games.get(0), clientSocket);
+                            ss.removeGame(ss.games.get(0));
+                        } else if (message.equals("audiobook")) {
+                            sendAAudioBook(ss.audioBooks.get(0), clientSocket);
+                            ss.removeAudioBook(ss.audioBooks.get(0));
+                        }
+                    } else {
+                        ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream());
+                        Object recievedObject = ois.readObject();
+                        if (recievedObject != null) {
+                            if (recievedObject instanceof Book) {
+                                Book book = (Book) recievedObject;
+                                ss.addBook(book);
+                                System.out.println(book);
+                            } else if (recievedObject instanceof Movie) {
+                                Movie movie = (Movie) recievedObject;
+                                ss.addMovie(movie);
+                                System.out.println(movie);
+                            } else if (recievedObject instanceof Game) {
+                                Game game = (Game) recievedObject;
+                                ss.addGame(game);
+                                System.out.println(game);
+                            } else if (recievedObject instanceof AudioBooks) {
+                                AudioBooks audioBooks = (AudioBooks) recievedObject;
+                                ss.addAudioBook(audioBooks);
+                                System.out.println(audioBooks);
+                            }
+                        }
                     }
-                    else if (message.equals("audiobook")) {
-                        sendAAudioBook(ss.audioBooks.get(0), clientSocket);
-                        ss.removeAudioBook(ss.audioBooks.get(0));
-                    }
-//                    System.out.println(clientSocket.getInetAddress());
-//                    writer.println(message);
-//                    writer.flush();
                 }
-//                Book book = (Book)(new ObjectInputStream(clientSocket.getInputStream()).readObject());
-//                System.out.println("GOT THE BOOK " + book.toString());
-            } catch (IOException ioe) {
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
             }
         }
     }
