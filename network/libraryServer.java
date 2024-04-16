@@ -88,13 +88,13 @@ public class libraryServer {
                         sendAAudioBook(ss.audioBooks.get(0), clientSocket);
                         ss.removeAudioBook(ss.audioBooks.get(0));
                     }
-                    System.out.println(clientSocket.getInetAddress());
-                    writer.println(message);
-                    writer.flush();
+//                    System.out.println(clientSocket.getInetAddress());
+//                    writer.println(message);
+//                    writer.flush();
                 }
-                Book book = (Book)(new ObjectInputStream(clientSocket.getInputStream()).readObject());
-                System.out.println("GOT THE BOOK " + book.toString());
-            } catch (IOException | ClassNotFoundException ioe) {
+//                Book book = (Book)(new ObjectInputStream(clientSocket.getInputStream()).readObject());
+//                System.out.println("GOT THE BOOK " + book.toString());
+            } catch (IOException ioe) {
             }
         }
     }

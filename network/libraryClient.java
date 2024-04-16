@@ -12,7 +12,7 @@ public class libraryClient {
     private void setupNetworking() {
         clientStorage cs = new clientStorage();
         try {
-            Socket socket = new Socket("192.168.1.200", 1025);
+            Socket socket = new Socket("10.145.13.97", 1025);
             System.out.println("network established");
             PrintWriter writer = new PrintWriter(socket.getOutputStream());
             //BufferedReader reader = new BufferedReader((new InputStreamReader(socket.getInputStream())));
@@ -44,8 +44,10 @@ public class libraryClient {
         @Override
         public void run() {
             try {
-                ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+                //ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
                 while(true){
+                    //ois.mark();
+                    ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
                     Object recievedObject =  ois.readObject();
                     if(recievedObject != null){
                         if(recievedObject instanceof Book){
@@ -69,6 +71,7 @@ public class libraryClient {
                             System.out.println(audioBooks);
                         }
                     }
+                    //ois.mark(1024);
                 }
             } catch (IOException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
