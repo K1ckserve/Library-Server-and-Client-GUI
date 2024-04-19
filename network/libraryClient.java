@@ -22,9 +22,35 @@ public class libraryClient {
             while (true) {
                 String input = scanner.nextLine();
                 if(input.equals("send")){
-                    writer.println("object");
-                    writer.flush();
-                    sendABook(cs.books.get(0), socket);
+                    String specific = scanner.nextLine();
+                    if(specific.equals("book")){
+                        if(!cs.books.isEmpty()){
+                            writer.println("object");
+                            writer.flush();
+                            sendABook(cs.books.get(0), socket);
+                        }
+                    }
+                    else if(specific.equals("movie")){
+                        if(!cs.movies.isEmpty()){
+                            writer.println("object");
+                            writer.flush();
+                            sendAMovie(cs.movies.get(0), socket);
+                        }
+                    }
+                    else if(specific.equals("game")){
+                        if(!cs.games.isEmpty()){
+                            writer.println("object");
+                            writer.flush();
+                            sendAGame(cs.games.get(0), socket);
+                        }
+                    }
+                    else if(specific.equals("audiobooks")){
+                        if(!cs.audioBooks.isEmpty()){
+                            writer.println("object");
+                            writer.flush();
+                            sendAAudioBook(cs.audioBooks.get(0), socket);
+                        }
+                    }
                 }else {
                     writer.println("message");
                     writer.flush();
