@@ -12,7 +12,7 @@ public class libraryClient {
     private void setupNetworking() {
         clientStorage cs = new clientStorage();
         try {
-            Socket socket = new Socket("10.154.244.220", 1025);
+            Socket socket = new Socket("10.145.64.21", 1025);
             System.out.println("network established");
             PrintWriter writer = new PrintWriter(socket.getOutputStream());
             //BufferedReader reader = new BufferedReader((new InputStreamReader(socket.getInputStream())));
@@ -127,10 +127,10 @@ public class libraryClient {
         oos.writeObject(audioBooks);
         oos.flush();
     }
-    public Book recieveABook(Socket socket) throws IOException, ClassNotFoundException {
-        Book book = (Book)(new ObjectInputStream(socket.getInputStream()).readObject());
-        return book;
-    }
+//    public Book recieveABook(Socket socket) throws IOException, ClassNotFoundException {
+//        Book book = (Book)(new ObjectInputStream(socket.getInputStream()).readObject());
+//        return book;
+//    }
 //    public Movie recieveAMovie(Socket socket) throws IOException, ClassNotFoundException {
 //        Movie movie = (Movie)(new ObjectInputStream(socket.getInputStream()).readObject());
 //        return movie;
