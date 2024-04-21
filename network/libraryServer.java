@@ -65,6 +65,7 @@ public class libraryServer {
                 String password = reader.readLine();
                 if(userPass.containsKey(username)) {
                     if(userPass.get(username).equals(password)) {
+                        System.out.println("User " + username + " has been logged in.");
                         Thread t = new Thread(new ClientHandler(clientSocket, ss));
                         t.start();
                     }

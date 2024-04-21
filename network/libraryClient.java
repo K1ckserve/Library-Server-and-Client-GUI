@@ -5,13 +5,19 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class libraryClient {
-    private PrintWriter writer;
+    Socket socket = new Socket("192.168.1.151", 1025);
+    PrintWriter writer = new PrintWriter(socket.getOutputStream());
+
+    public libraryClient() throws IOException {
+    }
+
     public void sendLoginCredentials(String username, String password) {
         writer.println(username);
+        writer.flush();
         writer.println(password);
         writer.flush();
     }
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         new libraryClient().setupNetworking();
     }
 
@@ -19,9 +25,7 @@ public class libraryClient {
         clientStorage cs = new clientStorage();
         catalog c = new catalog();
         try {
-            Socket socket = new Socket("192.168.1.151", 1025);
             System.out.println("network established");
-            PrintWriter writer = new PrintWriter(socket.getOutputStream());
             //BufferedReader reader = new BufferedReader((new InputStreamReader(socket.getInputStream())));
             Thread objReader = new Thread(new reciever (socket,cs, c));
             objReader.start();

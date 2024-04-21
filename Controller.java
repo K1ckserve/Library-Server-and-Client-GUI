@@ -7,11 +7,11 @@ import network.libraryClient;
 
 public class Controller {
     @FXML
-    private Button loginButton;
+    private Button Login;
     @FXML
-    private TextField usernameField;
+    private TextField username;
     @FXML
-    private PasswordField passwordField;
+    private TextField password;
 
     private libraryClient client;
 
@@ -21,9 +21,9 @@ public class Controller {
 
     @FXML
     protected void loginButtonAction(ActionEvent event) {
-        String username = usernameField.getText();
-        String password = passwordField.getText();
-        client.sendLoginCredentials(username, password);
+        String usernam = username.getText();
+        String passwor = password.getText();
+        client.sendLoginCredentials(usernam, passwor);
     }
 
     // You can add other methods to handle additional GUI actions
