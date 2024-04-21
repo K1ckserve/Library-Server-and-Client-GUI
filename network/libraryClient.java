@@ -5,6 +5,12 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class libraryClient {
+    private PrintWriter writer;
+    public void sendLoginCredentials(String username, String password) {
+        writer.println(username);
+        writer.println(password);
+        writer.flush();
+    }
     public static void main(String[] args) {
         new libraryClient().setupNetworking();
     }
@@ -20,14 +26,14 @@ public class libraryClient {
             Thread objReader = new Thread(new reciever (socket,cs, c));
             objReader.start();
             Scanner scanner = new Scanner(System.in);
-            System.out.println("username");
-            if(scanner.hasNextLine()) {
-                writer.println(scanner.nextLine());
-                writer.flush();
-                System.out.println("password");
-                writer.println(scanner.nextLine());
-                writer.flush();
-            }
+//            System.out.println("username");
+//            if(scanner.hasNextLine()) {
+//                writer.println(scanner.nextLine());
+//                writer.flush();
+//                System.out.println("password");
+//                writer.println(scanner.nextLine());
+//                writer.flush();
+//            }
             while (true) {
                 String input = scanner.nextLine();
                 if(input.equals("send")){

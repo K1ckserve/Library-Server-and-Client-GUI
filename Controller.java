@@ -1,16 +1,30 @@
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-
-import java.awt.*;
-import java.lang.reflect.Field;
+import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import network.libraryClient;
 
 public class Controller {
-    public javafx.scene.control.Button Login;
     @FXML
-    private javafx.scene.control.TextField username;
+    private Button loginButton;
     @FXML
-    private javafx.scene.control.TextField password;
+    private TextField usernameField;
     @FXML
-    protected void loginButtonAction() {
-        Login.setText("This worked");
+    private PasswordField passwordField;
+
+    private libraryClient client;
+
+    public void initialize(libraryClient client) {
+        this.client = client;
     }
+
+    @FXML
+    protected void loginButtonAction(ActionEvent event) {
+        String username = usernameField.getText();
+        String password = passwordField.getText();
+        client.sendLoginCredentials(username, password);
+    }
+
+    // You can add other methods to handle additional GUI actions
 }
