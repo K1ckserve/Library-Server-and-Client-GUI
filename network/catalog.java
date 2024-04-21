@@ -2,7 +2,7 @@ package network;
 
 import java.util.ArrayList;
 
-public class serverStorage {
+public class catalog {
     public ArrayList<Book> books = new ArrayList<>();
     public ArrayList<Movie> movies = new ArrayList<>();
     public ArrayList<AudioBooks> audioBooks = new ArrayList<>();

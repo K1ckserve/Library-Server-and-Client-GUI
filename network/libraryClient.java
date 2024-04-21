@@ -11,14 +11,23 @@ public class libraryClient {
 
     private void setupNetworking() {
         clientStorage cs = new clientStorage();
+        catalog c = new catalog();
         try {
-            Socket socket = new Socket("10.145.64.21", 1025);
+            Socket socket = new Socket("192.168.1.200", 1025);
             System.out.println("network established");
             PrintWriter writer = new PrintWriter(socket.getOutputStream());
             //BufferedReader reader = new BufferedReader((new InputStreamReader(socket.getInputStream())));
-            Thread objReader = new Thread(new reciever (socket,cs));
+            Thread objReader = new Thread(new reciever (socket,cs, c));
             objReader.start();
             Scanner scanner = new Scanner(System.in);
+            System.out.println("username");
+            if(scanner.hasNextLine()) {
+                writer.println(scanner.nextLine());
+                writer.flush();
+                System.out.println("password");
+                writer.println(scanner.nextLine());
+                writer.flush();
+            }
             while (true) {
                 String input = scanner.nextLine();
                 if(input.equals("send")){
@@ -66,20 +75,24 @@ public class libraryClient {
     class reciever implements Runnable {
         Socket socket;
         clientStorage cs;
-        public reciever (Socket socket, clientStorage cs) throws IOException {
+        catalog cat;
+        public reciever (Socket socket, clientStorage cs, catalog cat) throws IOException {
             this.socket = socket;
             this.cs = cs;
+            this.cat = cat;
         }
         @Override
         public void run() {
             try {
                 //ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
                 while(true){
-                    //ois.mark();
                     ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
                     Object recievedObject =  ois.readObject();
                     if(recievedObject != null){
-                        if(recievedObject instanceof Book){
+                        if(recievedObject instanceof catalog){
+                            cat = (catalog) recievedObject;
+                        }
+                        else if(recievedObject instanceof Book){
                             Book book = (Book) recievedObject;
                             cs.addBook(book);
                             System.out.println(book);
@@ -127,22 +140,7 @@ public class libraryClient {
         oos.writeObject(audioBooks);
         oos.flush();
     }
-//    public Book recieveABook(Socket socket) throws IOException, ClassNotFoundException {
-//        Book book = (Book)(new ObjectInputStream(socket.getInputStream()).readObject());
-//        return book;
-//    }
-//    public Movie recieveAMovie(Socket socket) throws IOException, ClassNotFoundException {
-//        Movie movie = (Movie)(new ObjectInputStream(socket.getInputStream()).readObject());
-//        return movie;
-//    }
-//    public Game recieveAGame(Socket socket) throws IOException, ClassNotFoundException {
-//        Game game = (Game)(new ObjectInputStream(socket.getInputStream()).readObject());
-//        return game;
-//    }
-//    public AudioBooks recieveAudioBooks(Socket socket) throws IOException, ClassNotFoundException {
-//        AudioBooks audioBooks = (AudioBooks)(new ObjectInputStream(socket.getInputStream()).readObject());
-//        return audioBooks;
-//    }
+
 }
 class user{
    private String username;

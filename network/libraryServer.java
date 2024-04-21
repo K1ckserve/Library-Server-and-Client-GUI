@@ -4,20 +4,25 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class libraryServer {
+    private ArrayList<user> history = new ArrayList<>();
+    public Map<String, String> userPass = new HashMap<>();
     public static void main(String[] args) {
         new libraryServer().setupNetworking();
     }
-    ArrayList<user> history = new ArrayList<>();
 
     List<Socket> sockets = new ArrayList<Socket>();
-    serverStorage ss = new serverStorage();
+    catalog ss = new catalog();
 
     private void setupNetworking() {
         try {
             ServerSocket server = new ServerSocket(1025);
+            Thread s = new Thread(new CatalogSender());
+            s.start();
             File f = new File("storage.set");
             try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f))) {
                 // Read objects in the exact order they were written
@@ -31,6 +36,8 @@ public class libraryServer {
                 ss.addMovie(movie2);
                 ss.addGame(game);
                 ss.addAudioBook(audiobook);
+                user demo = new user("ben", "123");
+                userPass.put("ben", "123");
 
 
                 // Optionally, output the objects to verify they've been read correctly
@@ -52,11 +59,17 @@ public class libraryServer {
                 System.out.println("incoming transmission");
 
                 sockets.add(clientSocket);
-
-                Thread t = new Thread(new ClientHandler(clientSocket, ss));
-                t.start();
-//                Thread s = new Thread(new serverReciever(clientSocket, ss));
-//                s.start();
+                PrintWriter writer = new PrintWriter(clientSocket.getOutputStream());
+                BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                String username = reader.readLine();
+                String password = reader.readLine();
+                if(userPass.containsKey(username)) {
+                    if(userPass.get(username).equals(password)) {
+                        Thread t = new Thread(new ClientHandler(clientSocket, ss));
+                        t.start();
+                    }
+//                    }
+                }
             }
         } catch (IOException ioe) {}
     }
@@ -64,9 +77,9 @@ public class libraryServer {
     class ClientHandler implements Runnable {
 
         private Socket clientSocket;
-        private serverStorage ss;
+        private catalog ss;
 
-        ClientHandler(Socket clientSocket, serverStorage ss) {
+        ClientHandler(Socket clientSocket, catalog ss) {
             this.clientSocket = clientSocket;
             this.ss = ss;
         }
@@ -77,6 +90,7 @@ public class libraryServer {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 String datatype;
                 while ((datatype = reader.readLine()) != null) {
+                    synchronized (this){
                     if (datatype.equals("message")) {
                         String message = reader.readLine();
                         System.out.println("RECEIVED: " + message);
@@ -116,11 +130,36 @@ public class libraryServer {
                             }
                         }
                     }
+                    }
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
+            }
+        }
+    }
+    class CatalogSender implements Runnable {
+        public void run() {
+            try {
+                while(true) {
+                    Thread.sleep(5000); // Adjust the interval as needed (currently every 5 seconds)
+                    sendCatalogToAllClients();
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        private void sendCatalogToAllClients() {
+            try {
+                for (Socket socket : sockets) {
+                    ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+                    oos.writeObject(ss);
+                    oos.flush();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -143,22 +182,6 @@ public class libraryServer {
         ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream());
         oos.writeObject(audioBooks);
         oos.flush();
-    }
-    public Book recieveABook(Socket socket) throws IOException, ClassNotFoundException {
-        Book book = (Book)(new ObjectInputStream(socket.getInputStream()).readObject());
-        return book;
-    }
-    public Movie recieveAMovie(Socket socket) throws IOException, ClassNotFoundException {
-        Movie movie = (Movie)(new ObjectInputStream(socket.getInputStream()).readObject());
-        return movie;
-    }
-    public Game recieveAGame(Socket socket) throws IOException, ClassNotFoundException {
-        Game game = (Game)(new ObjectInputStream(socket.getInputStream()).readObject());
-        return game;
-    }
-    public AudioBooks recieveAudioBooks(Socket socket) throws IOException, ClassNotFoundException {
-        AudioBooks audioBooks = (AudioBooks)(new ObjectInputStream(socket.getInputStream()).readObject());
-        return audioBooks;
     }
 }
 class Book implements Serializable {
@@ -225,3 +248,4 @@ class AudioBooks implements Serializable{
         return this.title + " : " + this.author;
     }
 }
+
