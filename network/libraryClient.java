@@ -1,5 +1,7 @@
 package network;
 
+import com.sun.org.apache.xml.internal.resolver.Catalog;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
@@ -8,7 +10,7 @@ public class libraryClient {
     private Socket socket;
     private PrintWriter writer;
     private clientStorage cs = new clientStorage();
-    public catalog c = new catalog();
+    private catalog c = new catalog();
     //Socket socket = new Socket("192.168.1.151", 1025);
 
     public libraryClient() throws IOException {
@@ -81,6 +83,9 @@ public class libraryClient {
     public void updateCatalog(catalog c){
         this.c = c;
     }
+    public catalog getCatalog(){
+        return c;
+    }
     class reciever implements Runnable {
         Socket socket;
         clientStorage cs;
@@ -100,7 +105,7 @@ public class libraryClient {
                     if(recievedObject != null){
                         if(recievedObject instanceof catalog){
                             cat = (catalog) recievedObject;
-                            updateCatalog(cat);
+                            libraryClient.this.updateCatalog(cat);
                         }
                         else if(recievedObject instanceof Book){
                             Book book = (Book) recievedObject;

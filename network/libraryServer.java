@@ -144,7 +144,7 @@ public class libraryServer {
         public void run() {
             try {
                 while(true) {
-                    Thread.sleep(500); // Adjust the interval as needed (currently every 5 seconds)
+                    Thread.sleep(100); // Adjust the interval as needed (currently every 5 seconds)
                     sendCatalogToAllClients();
                 }
             } catch (InterruptedException e) {

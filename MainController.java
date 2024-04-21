@@ -15,17 +15,11 @@ public class MainController {
     private libraryClient client;
     public void initialize(libraryClient client) {
         this.client = client;
+        bookVBox.getChildren().add(new CheckBox("why"));
         createCheckBoxes();
     }
-//    @FXML
-//    protected void setBookCheck(){
-//        for(Book bookName : client.c.books){
-//            Bcheck.setText(bookName.toString());
-//        }
-//    }
     private void createCheckBoxes(){
-        bookVBox.getChildren().clear();
-        for(Book book : client.c.books){
+        for(Book book : client.getCatalog().books){
             CheckBox checkBox = new CheckBox(book.toString());
             bookVBox.getChildren().add(checkBox);
         }

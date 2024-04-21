@@ -5,6 +5,7 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
 
@@ -16,9 +17,7 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <CheckBox fx:id="Bcheck" mnemonicParsing="false" prefHeight="25.0" prefWidth="202.0" text="CheckBox" />
-                        <CheckBox fx:id="Bcheck" layoutY="25.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="202.0" text="CheckBox" />
-                        <CheckBox fx:id="Bcheck" layoutY="50.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="202.0" text="CheckBox" />
+                        <VBox fx:id="bookVBox" layoutY="1.0" prefHeight="180.0" prefWidth="210.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      </children>
                   </AnchorPane>
             </content>
