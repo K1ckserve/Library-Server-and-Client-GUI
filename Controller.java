@@ -1,8 +1,12 @@
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import network.libraryClient;
 
 import java.io.IOException;
@@ -29,6 +33,19 @@ public class Controller {
             client.connectToServer("192.168.1.151", 1025);
             client.sendLoginCredentials(usernam, passwor);
             client.setupNetworking();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Main.fxml"));
+            Parent root = loader.load();
+            MainController mainContr = loader.getController();
+            mainContr.initialize(client);
+
+            // Get the current stage
+            Stage stage = (Stage) Login.getScene().getWindow();
+
+            // Set the scene to the next FXML file
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Library");
+            stage.show();
         } catch(IOException e){
             e.printStackTrace();
         }

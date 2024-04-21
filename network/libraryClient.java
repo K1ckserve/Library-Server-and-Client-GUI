@@ -8,7 +8,7 @@ public class libraryClient {
     private Socket socket;
     private PrintWriter writer;
     private clientStorage cs = new clientStorage();
-    private catalog c = new catalog();
+    public catalog c = new catalog();
     //Socket socket = new Socket("192.168.1.151", 1025);
 
     public libraryClient() throws IOException {
@@ -33,50 +33,53 @@ public class libraryClient {
             //BufferedReader reader = new BufferedReader((new InputStreamReader(socket.getInputStream())));
             Thread objReader = new Thread(new reciever (socket,cs,c));
             objReader.start();
-            Scanner scanner = new Scanner(System.in);
-            while (true) {
-                String input = scanner.nextLine();
-                if(input.equals("send")){
-                    String specific = scanner.nextLine();
-                    if(specific.equals("book")){
-                        if(!cs.books.isEmpty()){
-                            writer.println("object");
-                            writer.flush();
-                            sendABook(cs.books.get(0), socket);
-                        }
-                    }
-                    else if(specific.equals("movie")){
-                        if(!cs.movies.isEmpty()){
-                            writer.println("object");
-                            writer.flush();
-                            sendAMovie(cs.movies.get(0), socket);
-                        }
-                    }
-                    else if(specific.equals("game")){
-                        if(!cs.games.isEmpty()){
-                            writer.println("object");
-                            writer.flush();
-                            sendAGame(cs.games.get(0), socket);
-                        }
-                    }
-                    else if(specific.equals("audiobooks")){
-                        if(!cs.audioBooks.isEmpty()){
-                            writer.println("object");
-                            writer.flush();
-                            sendAAudioBook(cs.audioBooks.get(0), socket);
-                        }
-                    }
-                }else {
-                    writer.println("message");
-                    writer.flush();
-                    writer.println(input);
-                    writer.flush();
-                }
-            }
+//            Scanner scanner = new Scanner(System.in);
+//            while (true) {
+//                String input = scanner.nextLine();
+//                if(input.equals("send")){
+//                    String specific = scanner.nextLine();
+//                    if(specific.equals("book")){
+//                        if(!cs.books.isEmpty()){
+//                            writer.println("object");
+//                            writer.flush();
+//                            sendABook(cs.books.get(0), socket);
+//                        }
+//                    }
+//                    else if(specific.equals("movie")){
+//                        if(!cs.movies.isEmpty()){
+//                            writer.println("object");
+//                            writer.flush();
+//                            sendAMovie(cs.movies.get(0), socket);
+//                        }
+//                    }
+//                    else if(specific.equals("game")){
+//                        if(!cs.games.isEmpty()){
+//                            writer.println("object");
+//                            writer.flush();
+//                            sendAGame(cs.games.get(0), socket);
+//                        }
+//                    }
+//                    else if(specific.equals("audiobooks")){
+//                        if(!cs.audioBooks.isEmpty()){
+//                            writer.println("object");
+//                            writer.flush();
+//                            sendAAudioBook(cs.audioBooks.get(0), socket);
+//                        }
+//                    }
+//                }else {
+//                    writer.println("message");
+//                    writer.flush();
+//                    writer.println(input);
+//                    writer.flush();
+//                }
+//            }
 
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
+    }
+    public void updateCatalog(catalog c){
+        this.c = c;
     }
     class reciever implements Runnable {
         Socket socket;
@@ -97,6 +100,7 @@ public class libraryClient {
                     if(recievedObject != null){
                         if(recievedObject instanceof catalog){
                             cat = (catalog) recievedObject;
+                            updateCatalog(cat);
                         }
                         else if(recievedObject instanceof Book){
                             Book book = (Book) recievedObject;
