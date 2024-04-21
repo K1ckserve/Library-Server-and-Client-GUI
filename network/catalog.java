@@ -1,8 +1,9 @@
 package network;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class catalog {
+public class catalog implements Serializable {
     public ArrayList<Book> books = new ArrayList<>();
     public ArrayList<Movie> movies = new ArrayList<>();
     public ArrayList<AudioBooks> audioBooks = new ArrayList<>();

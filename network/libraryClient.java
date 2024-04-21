@@ -13,7 +13,7 @@ public class libraryClient {
         clientStorage cs = new clientStorage();
         catalog c = new catalog();
         try {
-            Socket socket = new Socket("192.168.1.200", 1025);
+            Socket socket = new Socket("192.168.1.151", 1025);
             System.out.println("network established");
             PrintWriter writer = new PrintWriter(socket.getOutputStream());
             //BufferedReader reader = new BufferedReader((new InputStreamReader(socket.getInputStream())));
