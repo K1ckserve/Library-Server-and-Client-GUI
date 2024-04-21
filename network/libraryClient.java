@@ -5,13 +5,17 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class libraryClient {
-    Socket socket = new Socket("192.168.1.151", 1025);
-    PrintWriter writer = new PrintWriter(socket.getOutputStream());
+    private Socket socket;
+    private PrintWriter writer;
+    //Socket socket = new Socket("192.168.1.151", 1025);
 
     public libraryClient() throws IOException {
     }
-
-    public void sendLoginCredentials(String username, String password) {
+    public void connectToServer(String ipAddress, int port) throws IOException {
+        socket = new Socket(ipAddress, port);
+        writer = new PrintWriter(socket.getOutputStream(), true);
+    }
+    public void sendLoginCredentials(String username, String password) throws IOException {
         writer.println(username);
         writer.flush();
         writer.println(password);
@@ -21,7 +25,7 @@ public class libraryClient {
         new libraryClient().setupNetworking();
     }
 
-    private void setupNetworking() {
+    public void setupNetworking() {
         clientStorage cs = new clientStorage();
         catalog c = new catalog();
         try {
@@ -30,14 +34,6 @@ public class libraryClient {
             Thread objReader = new Thread(new reciever (socket,cs, c));
             objReader.start();
             Scanner scanner = new Scanner(System.in);
-//            System.out.println("username");
-//            if(scanner.hasNextLine()) {
-//                writer.println(scanner.nextLine());
-//                writer.flush();
-//                System.out.println("password");
-//                writer.println(scanner.nextLine());
-//                writer.flush();
-//            }
             while (true) {
                 String input = scanner.nextLine();
                 if(input.equals("send")){
