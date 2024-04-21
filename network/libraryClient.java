@@ -7,6 +7,8 @@ import java.util.Scanner;
 public class libraryClient {
     private Socket socket;
     private PrintWriter writer;
+    private clientStorage cs = new clientStorage();
+    private catalog c = new catalog();
     //Socket socket = new Socket("192.168.1.151", 1025);
 
     public libraryClient() throws IOException {
@@ -26,12 +28,10 @@ public class libraryClient {
     }
 
     public void setupNetworking() {
-        clientStorage cs = new clientStorage();
-        catalog c = new catalog();
         try {
             System.out.println("network established");
             //BufferedReader reader = new BufferedReader((new InputStreamReader(socket.getInputStream())));
-            Thread objReader = new Thread(new reciever (socket,cs, c));
+            Thread objReader = new Thread(new reciever (socket,cs,c));
             objReader.start();
             Scanner scanner = new Scanner(System.in);
             while (true) {
