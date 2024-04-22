@@ -1,19 +1,29 @@
 package network;
 
-import com.sun.org.apache.xml.internal.resolver.Catalog;
-
 import java.io.*;
 import java.net.Socket;
-import java.util.Scanner;
 
 public class libraryClient {
     private Socket socket;
     private PrintWriter writer;
     private clientStorage cs = new clientStorage();
-    private catalog c = new catalog();
+    private Catalog catalog = new Catalog();
+    private CatalogUpdateListener listener;
+
     //Socket socket = new Socket("192.168.1.151", 1025);
 
     public libraryClient() throws IOException {
+    }
+    public void setCatalogUpdateListener(CatalogUpdateListener listener) {
+        this.listener = listener;
+    }
+    private void notifyCatalogUpdate() {
+        if(listener != null) {
+            listener.onCatalogUpdate(catalog);
+        }
+    }
+    private void updateCatalog(){
+        notifyCatalogUpdate();
     }
     public void connectToServer(String ipAddress, int port) throws IOException {
         socket = new Socket(ipAddress, port);
@@ -33,7 +43,7 @@ public class libraryClient {
         try {
             System.out.println("network established");
             //BufferedReader reader = new BufferedReader((new InputStreamReader(socket.getInputStream())));
-            Thread objReader = new Thread(new reciever (socket,cs,c));
+            Thread objReader = new Thread(new reciever (socket,cs,catalog));
             objReader.start();
 //            Scanner scanner = new Scanner(System.in);
 //            while (true) {
@@ -80,17 +90,17 @@ public class libraryClient {
             ioe.printStackTrace();
         }
     }
-    public void updateCatalog(catalog c){
-        this.c = c;
+    public void updateCatalog(Catalog c){
+        this.catalog = c;
     }
-    public catalog getCatalog(){
-        return c;
+    public Catalog getCatalog(){
+        return catalog;
     }
     class reciever implements Runnable {
         Socket socket;
         clientStorage cs;
-        catalog cat;
-        public reciever (Socket socket, clientStorage cs, catalog cat) throws IOException {
+        Catalog cat;
+        public reciever (Socket socket, clientStorage cs, Catalog cat) throws IOException {
             this.socket = socket;
             this.cs = cs;
             this.cat = cat;
@@ -103,8 +113,9 @@ public class libraryClient {
                     ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
                     Object recievedObject =  ois.readObject();
                     if(recievedObject != null){
-                        if(recievedObject instanceof catalog){
-                            cat = (catalog) recievedObject;
+                        if(recievedObject instanceof Catalog){
+                            cat = (Catalog) recievedObject;
+                            updateCatalog(cat);
                             libraryClient.this.updateCatalog(cat);
                         }
                         else if(recievedObject instanceof Book){

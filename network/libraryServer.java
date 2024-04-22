@@ -16,7 +16,7 @@ public class libraryServer {
     }
 
     List<Socket> sockets = new ArrayList<Socket>();
-    catalog ss = new catalog();
+    Catalog ss = new Catalog();
 
     private void setupNetworking() {
         try {
@@ -78,9 +78,9 @@ public class libraryServer {
     class ClientHandler implements Runnable {
 
         private Socket clientSocket;
-        private catalog ss;
+        private Catalog ss;
 
-        ClientHandler(Socket clientSocket, catalog ss) {
+        ClientHandler(Socket clientSocket, Catalog ss) {
             this.clientSocket = clientSocket;
             this.ss = ss;
         }
