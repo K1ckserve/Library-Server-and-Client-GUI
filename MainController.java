@@ -21,6 +21,7 @@ public class MainController implements CatalogUpdateListener {
         this.clientCatalog = clientCatalog;
         bookVBox.getChildren().add(new CheckBox("why"));
         createCheckBoxes();
+        onCatalogUpdate(clientCatalog);
     }
     public void setCatalog(Catalog clientCatalog){
         this.clientCatalog = clientCatalog;
