@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainController">
    <children>
       <Accordion layoutX="14.0" layoutY="43.0">
@@ -26,9 +25,7 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <CheckBox layoutY="2.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="202.0" text="CheckBox" />
-                        <CheckBox layoutY="27.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="202.0" text="CheckBox" />
-                        <CheckBox layoutX="-1.0" layoutY="52.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="202.0" text="CheckBox" />
+                        <VBox fx:id="movieVBox" prefHeight="180.0" prefWidth="210.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      </children>
                   </AnchorPane>
             </content>
@@ -37,9 +34,7 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <CheckBox mnemonicParsing="false" prefHeight="25.0" prefWidth="202.0" text="CheckBox" />
-                        <CheckBox layoutY="25.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="202.0" text="CheckBox" />
-                        <CheckBox layoutY="50.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="202.0" text="CheckBox" />
+                        <VBox fx:id="audioVBox" prefHeight="180.0" prefWidth="210.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      </children>
                   </AnchorPane>
             </content>
@@ -48,9 +43,7 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <CheckBox mnemonicParsing="false" prefHeight="25.0" prefWidth="202.0" text="CheckBox" />
-                        <CheckBox layoutY="25.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="202.0" text="CheckBox" />
-                        <CheckBox layoutY="50.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="202.0" text="CheckBox" />
+                        <VBox fx:id="gameVBox" prefHeight="180.0" prefWidth="210.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      </children>
                   </AnchorPane>
                </content>

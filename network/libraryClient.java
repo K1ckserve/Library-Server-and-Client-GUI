@@ -1,5 +1,7 @@
 package network;
 
+import javafx.application.Platform;
+
 import java.io.*;
 import java.net.Socket;
 
@@ -22,7 +24,7 @@ public class libraryClient {
             listener.onCatalogUpdate(catalog);
         }
     }
-    private void updateCatalog(){
+    private void updateListenerCatalog(){
         notifyCatalogUpdate();
     }
     public void connectToServer(String ipAddress, int port) throws IOException {
@@ -114,9 +116,14 @@ public class libraryClient {
                     Object recievedObject =  ois.readObject();
                     if(recievedObject != null){
                         if(recievedObject instanceof Catalog){
-                            cat = (Catalog) recievedObject;
-                            updateCatalog(cat);
-                            libraryClient.this.updateCatalog(cat);
+                            Catalog c = (Catalog) recievedObject;
+                            if(!(cat.books.size() == c.books.size() && cat.movies.size() == c.movies.size()&&cat.games.size() == c.games.size() && cat.audioBooks.size()==c.audioBooks.size())){
+                                cat = (Catalog) recievedObject;
+                                libraryClient.this.updateCatalog(cat);
+                                Platform.runLater(()->{
+                                    updateListenerCatalog();
+                                });
+                            }
                         }
                         else if(recievedObject instanceof Book){
                             Book book = (Book) recievedObject;

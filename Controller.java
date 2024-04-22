@@ -36,7 +36,6 @@ public class Controller {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Main.fxml"));
             Parent root = loader.load();
             MainController mainContr = loader.getController();
-            if(client.getCatalog().books.size())
             client.setCatalogUpdateListener(mainContr);
             mainContr.initialize(client, client.getCatalog());
 
