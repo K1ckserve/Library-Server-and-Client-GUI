@@ -36,6 +36,7 @@ public class Controller {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Main.fxml"));
             Parent root = loader.load();
             MainController mainContr = loader.getController();
+            client.setCatalogUpdateListener(mainContr);
             mainContr.initialize(client, client.getCatalog());
 
             // Get the current stage
