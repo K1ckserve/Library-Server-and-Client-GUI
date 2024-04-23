@@ -4,6 +4,8 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.layout.VBox;
 import network.*;
 
+import java.awt.event.ActionEvent;
+
 public class MainController implements CatalogUpdateListener {
     @FXML
     private Button Return;
@@ -46,6 +48,7 @@ public class MainController implements CatalogUpdateListener {
             audioVBox.getChildren().add(checkBox);
         }
     }
+    public void onRentAction(ActionEvent event) {}
     private void createCheckBoxes(){
         for(Book book : client.getCatalog().books){
             CheckBox checkBox = new CheckBox(book.toString());
