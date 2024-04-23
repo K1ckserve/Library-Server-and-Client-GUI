@@ -62,6 +62,9 @@ public class libraryClient {
     public Catalog getCatalog(){
         return catalog;
     }
+    public Catalog getClientCatalog(){
+        return clientCatalog;
+    }
     class reciever implements Runnable {
         Socket socket;
         Catalog clientStorage;
