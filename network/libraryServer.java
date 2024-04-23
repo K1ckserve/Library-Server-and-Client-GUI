@@ -94,9 +94,9 @@ public class libraryServer {
                         System.out.println("RECEIVED: " + message);
                         if (message.equals("book")) {
                             Iterator<Book> iterator = ss.books.iterator();
+                            String message1 = reader.readLine();
                             while (iterator.hasNext()) {
                             Book b = iterator.next();
-                            String message1 = reader.readLine();
                             if (b.toString().equals(message1)) {
                                 sendABook(b, clientSocket);
                                 iterator.remove(); // Remove the current item using iterator
@@ -105,9 +105,9 @@ public class libraryServer {
                         }
                     } else if (message.equals("movie")) {
                         Iterator<Movie> iterator = ss.movies.iterator();
+                        String message1 = reader.readLine();
                         while (iterator.hasNext()) {
                             Movie m = iterator.next();
-                            String message1 = reader.readLine();
                             if (m.toString().equals(message1)) {
                                 sendAMovie(m, clientSocket);
                                 iterator.remove();
@@ -116,9 +116,9 @@ public class libraryServer {
                         }
                     } else if (message.equals("game")) {
                         Iterator<Game> iterator = ss.games.iterator();
+                        String message1 = reader.readLine();
                         while (iterator.hasNext()) {
                             Game g = iterator.next();
-                            String message1 = reader.readLine();
                             if (g.toString().equals(message1)) {
                                 sendAGame(g, clientSocket);
                                 iterator.remove(); // Remove the current item using iterator
@@ -127,9 +127,9 @@ public class libraryServer {
                         }
                     } else if (message.equals("audiobook")) {
                             Iterator<AudioBooks> iterator = ss.audioBooks.iterator();
+                            String message1 = reader.readLine();
                             while (iterator.hasNext()) {
                                 AudioBooks a = iterator.next();
-                                String message1 = reader.readLine();
                                 if (a.toString().equals(message1)) {
                                     sendAAudioBook(a, clientSocket);
                                     iterator.remove(); // Remove the current item using iterator

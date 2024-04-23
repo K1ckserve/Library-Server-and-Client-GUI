@@ -70,6 +70,7 @@ public class MainController implements CatalogUpdateListener {
         clientbooksVBox.getChildren().clear();
         clientmoviesVBox.getChildren().clear();
         clientbooksVBox.getChildren().clear();
+        clientgamesVBox.getChildren().clear();
         clientaudiobooksVBox.getChildren().clear();
         setClientCatalog(catalog);
         for(Book book : client.getClientCatalog().books){
@@ -124,4 +125,5 @@ public class MainController implements CatalogUpdateListener {
             }
         }
     }
+    public
 }
