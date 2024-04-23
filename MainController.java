@@ -85,12 +85,6 @@ public class MainController implements CatalogUpdateListener {
             audioVBox.getChildren().add(checkBox);
         }
     }
-    private void createCheckBoxes(){
-        for(Book book : client.getCatalog().books){
-            CheckBox checkBox = new CheckBox(book.toString());
-            bookVBox.getChildren().add(checkBox);
-        }
-    }
 
     public void onRentAction(javafx.event.ActionEvent actionEvent) {
         for (Node node : bookVBox.getChildren()) {

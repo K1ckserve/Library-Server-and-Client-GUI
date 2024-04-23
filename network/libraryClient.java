@@ -29,7 +29,7 @@ public class libraryClient {
     }
     private void notifyCatalogClientCatalog(){
         if(listener != null){
-            listener.onCatalogUpdate(clientCatalog);
+            listener.onClientCatalogUpdate(clientCatalog);
         }
     }
     public void connectToServer(String ipAddress, int port) throws IOException {
@@ -50,7 +50,7 @@ public class libraryClient {
         try {
             System.out.println("network established");
             //BufferedReader reader = new BufferedReader((new InputStreamReader(socket.getInputStream())));
-            Thread objReader = new Thread(new reciever (socket,cs,catalog));
+            Thread objReader = new Thread(new reciever (socket,clientCatalog,catalog));
             objReader.start();
         } catch (IOException ioe) {
             ioe.printStackTrace();
