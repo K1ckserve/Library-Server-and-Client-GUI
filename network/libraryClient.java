@@ -136,8 +136,8 @@ public class libraryClient {
         writer.println(item);
         writer.flush();
     }
-    public void sendABook(Book book, Socket clientSocket) throws IOException {
-        ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream());
+    public void sendABook(Book book) throws IOException {
+        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
         oos.writeObject(book);
         oos.flush();
     }

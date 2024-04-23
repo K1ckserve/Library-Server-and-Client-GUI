@@ -125,5 +125,14 @@ public class MainController implements CatalogUpdateListener {
             }
         }
     }
-    public
+    public void onReturnAction(javafx.event.ActionEvent actionEvent) {
+        for (Node node : clientbooksVBox.getChildren()) {
+            if (node instanceof CheckBox) {
+                CheckBox checkBox = (CheckBox) node;
+                if (checkBox.isSelected()) {
+                    //client.sendABook(clientCatalog.books.contains);
+                }
+            }
+        }
+    }
 }
