@@ -96,8 +96,12 @@ public class libraryServer {
                         String message = reader.readLine();
                         System.out.println("RECEIVED: " + message);
                         if (message.equals("book")) {
-                            sendABook(ss.books.get(0), clientSocket);
-                            ss.removeBook(ss.books.get(0));
+                            for(Book b : ss.books){
+                                if(b.toString().equals(message)){
+                                    sendABook(b, clientSocket);
+                                    ss.removeBook(ss.books.get(0));
+                                }
+                            }
                         } else if (message.equals("movie")) {
                             sendAMovie(ss.movies.get(0), clientSocket);
                             ss.removeMovie(ss.movies.get(0));

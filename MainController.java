@@ -1,4 +1,5 @@
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.VBox;
@@ -48,7 +49,44 @@ public class MainController implements CatalogUpdateListener {
             audioVBox.getChildren().add(checkBox);
         }
     }
-    public void onRentAction(ActionEvent event) {}
+    public void onRentAction(ActionEvent event) {
+        for (Node node : bookVBox.getChildren()) {
+            if (node instanceof CheckBox) {
+                CheckBox checkBox = (CheckBox) node;
+                if (checkBox.isSelected()) {
+                    // Checkbox is selected, perform action
+                    // Example: System.out.println(checkBox.getText() + " is selected");
+                }
+            }
+        }
+        for (Node node : movieVBox.getChildren()) {
+            if (node instanceof CheckBox) {
+                CheckBox checkBox = (CheckBox) node;
+                if (checkBox.isSelected()) {
+                    // Checkbox is selected, perform action
+                    // Example: System.out.println(checkBox.getText() + " is selected");
+                }
+            }
+        }
+        for (Node node : gameVBox.getChildren()) {
+            if (node instanceof CheckBox) {
+                CheckBox checkBox = (CheckBox) node;
+                if (checkBox.isSelected()) {
+                    // Checkbox is selected, perform action
+                    // Example: System.out.println(checkBox.getText() + " is selected");
+                }
+            }
+        }
+        for (Node node : audioVBox.getChildren()) {
+            if (node instanceof CheckBox) {
+                CheckBox checkBox = (CheckBox) node;
+                if (checkBox.isSelected()) {
+                    // Checkbox is selected, perform action
+                    // Example: System.out.println(checkBox.getText() + " is selected");
+                }
+            }
+        }
+    }
     private void createCheckBoxes(){
         for(Book book : client.getCatalog().books){
             CheckBox checkBox = new CheckBox(book.toString());
