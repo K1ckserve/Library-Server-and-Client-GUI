@@ -49,8 +49,14 @@ public class MainController implements CatalogUpdateListener {
             audioVBox.getChildren().add(checkBox);
         }
     }
-    @FXML
-    public void onRentAction(ActionEvent event) {
+    private void createCheckBoxes(){
+        for(Book book : client.getCatalog().books){
+            CheckBox checkBox = new CheckBox(book.toString());
+            bookVBox.getChildren().add(checkBox);
+        }
+    }
+
+    public void onRentAction(javafx.event.ActionEvent actionEvent) {
         for (Node node : bookVBox.getChildren()) {
             if (node instanceof CheckBox) {
                 CheckBox checkBox = (CheckBox) node;
@@ -82,12 +88,6 @@ public class MainController implements CatalogUpdateListener {
                     client.recieveAnItem(checkBox.getText(), "audiobook");
                 }
             }
-        }
-    }
-    private void createCheckBoxes(){
-        for(Book book : client.getCatalog().books){
-            CheckBox checkBox = new CheckBox(book.toString());
-            bookVBox.getChildren().add(checkBox);
         }
     }
 }
