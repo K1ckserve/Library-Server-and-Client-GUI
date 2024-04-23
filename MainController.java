@@ -31,6 +31,10 @@ public class MainController implements CatalogUpdateListener {
     }
     @Override
     public void onCatalogUpdate(Catalog catalog) {
+        bookVBox.getChildren().clear();
+        movieVBox.getChildren().clear();
+        gameVBox.getChildren().clear();
+        audioVBox.getChildren().clear();
         setCatalog(catalog);
         for(Book book : client.getCatalog().books){
             CheckBox checkBox = new CheckBox(book.toString());

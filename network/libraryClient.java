@@ -8,7 +8,7 @@ import java.net.Socket;
 public class libraryClient {
     private Socket socket;
     private PrintWriter writer;
-    private clientStorage cs = new clientStorage();
+    private Catalog clientCatalog = new Catalog();
     private Catalog catalog = new Catalog();
     private CatalogUpdateListener listener;
 
@@ -19,13 +19,18 @@ public class libraryClient {
     public void setCatalogUpdateListener(CatalogUpdateListener listener) {
         this.listener = listener;
     }
+    private void updateListenerCatalog(){
+        notifyCatalogUpdate();
+    }
     private void notifyCatalogUpdate() {
         if(listener != null) {
             listener.onCatalogUpdate(catalog);
         }
     }
-    private void updateListenerCatalog(){
-        notifyCatalogUpdate();
+    private void notifyCatalogClientCatalog(){
+        if(listener != null){
+            listener.onCatalogUpdate(clientCatalog);
+        }
     }
     public void connectToServer(String ipAddress, int port) throws IOException {
         socket = new Socket(ipAddress, port);
@@ -47,47 +52,6 @@ public class libraryClient {
             //BufferedReader reader = new BufferedReader((new InputStreamReader(socket.getInputStream())));
             Thread objReader = new Thread(new reciever (socket,cs,catalog));
             objReader.start();
-//            Scanner scanner = new Scanner(System.in);
-//            while (true) {
-//                String input = scanner.nextLine();
-//                if(input.equals("send")){
-//                    String specific = scanner.nextLine();
-//                    if(specific.equals("book")){
-//                        if(!cs.books.isEmpty()){
-//                            writer.println("object");
-//                            writer.flush();
-//                            sendABook(cs.books.get(0), socket);
-//                        }
-//                    }
-//                    else if(specific.equals("movie")){
-//                        if(!cs.movies.isEmpty()){
-//                            writer.println("object");
-//                            writer.flush();
-//                            sendAMovie(cs.movies.get(0), socket);
-//                        }
-//                    }
-//                    else if(specific.equals("game")){
-//                        if(!cs.games.isEmpty()){
-//                            writer.println("object");
-//                            writer.flush();
-//                            sendAGame(cs.games.get(0), socket);
-//                        }
-//                    }
-//                    else if(specific.equals("audiobooks")){
-//                        if(!cs.audioBooks.isEmpty()){
-//                            writer.println("object");
-//                            writer.flush();
-//                            sendAAudioBook(cs.audioBooks.get(0), socket);
-//                        }
-//                    }
-//                }else {
-//                    writer.println("message");
-//                    writer.flush();
-//                    writer.println(input);
-//                    writer.flush();
-//                }
-//            }
-
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
@@ -100,11 +64,11 @@ public class libraryClient {
     }
     class reciever implements Runnable {
         Socket socket;
-        clientStorage cs;
+        Catalog clientStorage;
         Catalog cat;
-        public reciever (Socket socket, clientStorage cs, Catalog cat) throws IOException {
+        public reciever (Socket socket, Catalog clientStorage, Catalog cat) throws IOException {
             this.socket = socket;
-            this.cs = cs;
+            this.clientStorage = clientStorage;
             this.cat = cat;
         }
         @Override
@@ -114,37 +78,37 @@ public class libraryClient {
                 while(true){
                     ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
                     Object recievedObject =  ois.readObject();
-                    if(recievedObject != null){
-                        if(recievedObject instanceof Catalog){
+                    if(recievedObject != null) {
+                        if (recievedObject instanceof Catalog) {
                             Catalog c = (Catalog) recievedObject;
-                            if(!(cat.books.size() == c.books.size() && cat.movies.size() == c.movies.size()&&cat.games.size() == c.games.size() && cat.audioBooks.size()==c.audioBooks.size())){
+                            if (!(cat.books.size() == c.books.size() && cat.movies.size() == c.movies.size() && cat.games.size() == c.games.size() && cat.audioBooks.size() == c.audioBooks.size())) {
                                 cat = (Catalog) recievedObject;
                                 libraryClient.this.updateCatalog(cat);
-                                Platform.runLater(()->{
+                                Platform.runLater(() -> {
                                     updateListenerCatalog();
                                 });
                             }
-                        }
-                        else if(recievedObject instanceof Book){
+                        } else if (recievedObject instanceof Book) {
                             Book book = (Book) recievedObject;
-                            cs.addBook(book);
+                            clientStorage.addBook(book);
                             System.out.println(book);
-                        }
-                        else if (recievedObject instanceof Movie){
+                        } else if (recievedObject instanceof Movie) {
                             Movie movie = (Movie) recievedObject;
-                            cs.addMovie(movie);
+                            clientStorage.addMovie(movie);
                             System.out.println(movie);
-                        }
-                        else if (recievedObject instanceof Game){
+                        } else if (recievedObject instanceof Game) {
                             Game game = (Game) recievedObject;
-                            cs.addGame(game);
+                            clientStorage.addGame(game);
                             System.out.println(game);
-                        }
-                        else if (recievedObject instanceof AudioBooks){
+                        } else if (recievedObject instanceof AudioBooks) {
                             AudioBooks audioBooks = (AudioBooks) recievedObject;
-                            cs.addAudioBook(audioBooks);
+                            clientStorage.addAudioBook(audioBooks);
                             System.out.println(audioBooks);
                         }
+                        updateCatalog(clientStorage);
+                        Platform.runLater(() -> {
+                            notifyCatalogClientCatalog();
+                        });
                     }
                     //ois.mark(1024);
                 }

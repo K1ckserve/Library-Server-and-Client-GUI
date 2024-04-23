@@ -3,10 +3,7 @@ package network;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class libraryServer {
     private ArrayList<user> history = new ArrayList<>();
@@ -96,35 +93,47 @@ public class libraryServer {
                         String message = reader.readLine();
                         System.out.println("RECEIVED: " + message);
                         if (message.equals("book")) {
-                            for(Book b : ss.books){
-                                String message1 = reader.readLine();
-                                if(b.toString().equals(message1)){
-                                    sendABook(b, clientSocket);
-                                    ss.removeBook(b);
-                                }
+                            Iterator<Book> iterator = ss.books.iterator();
+                            while (iterator.hasNext()) {
+                            Book b = iterator.next();
+                            String message1 = reader.readLine();
+                            if (b.toString().equals(message1)) {
+                                sendABook(b, clientSocket);
+                                iterator.remove(); // Remove the current item using iterator
+                                break; // Exit the loop after removing the item
                             }
-                        } else if (message.equals("movie")) {
-                            for(Movie m : ss.movies){
-                                String message1 = reader.readLine();
-                                if(m.toString().equals(message1)){
-                                    sendAMovie(m, clientSocket);
-                                    ss.removeMovie(m);
-                                }
+                        }
+                    } else if (message.equals("movie")) {
+                        Iterator<Movie> iterator = ss.movies.iterator();
+                        while (iterator.hasNext()) {
+                            Movie m = iterator.next();
+                            String message1 = reader.readLine();
+                            if (m.toString().equals(message1)) {
+                                sendAMovie(m, clientSocket);
+                                iterator.remove();
+                                break;
                             }
-                        } else if (message.equals("game")) {
-                            for(Game g : ss.games){
-                                String message1 = reader.readLine();
-                                if(g.toString().equals(message1)){
-                                    sendAGame(g, clientSocket);
-                                    ss.removeGame(g);
-                                }
+                        }
+                    } else if (message.equals("game")) {
+                        Iterator<Game> iterator = ss.games.iterator();
+                        while (iterator.hasNext()) {
+                            Game g = iterator.next();
+                            String message1 = reader.readLine();
+                            if (g.toString().equals(message1)) {
+                                sendAGame(g, clientSocket);
+                                iterator.remove(); // Remove the current item using iterator
+                                break; // Exit the loop after removing the item
                             }
-                        } else if (message.equals("audiobook")) {
-                            for(AudioBooks a : ss.audioBooks){
+                        }
+                    } else if (message.equals("audiobook")) {
+                            Iterator<AudioBooks> iterator = ss.audioBooks.iterator();
+                            while (iterator.hasNext()) {
+                                AudioBooks a = iterator.next();
                                 String message1 = reader.readLine();
-                                if(a.toString().equals(message1)){
+                                if (a.toString().equals(message1)) {
                                     sendAAudioBook(a, clientSocket);
-                                    ss.removeAudioBook(a);
+                                    iterator.remove(); // Remove the current item using iterator
+                                    break; // Exit the loop after removing the item
                                 }
                             }
                         }
@@ -164,7 +173,7 @@ public class libraryServer {
         public void run() {
             try {
                 while(true) {
-                    Thread.sleep(100); // Adjust the interval as needed (currently every 5 seconds)
+                    Thread.sleep(1000); // Adjust the interval as needed (currently every 5 seconds)
                     sendCatalogToAllClients();
                 }
             } catch (InterruptedException e) {
