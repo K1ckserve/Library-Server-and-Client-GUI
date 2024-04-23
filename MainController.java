@@ -30,12 +30,16 @@ public class MainController implements CatalogUpdateListener {
     private VBox clientgamesVBox;
     private libraryClient client;
     private Catalog clientCatalog;
+    private Catalog catalog;
     public void initialize(libraryClient client, Catalog clientCatalog) {
         this.client = client;
         this.clientCatalog = clientCatalog;
     }
-    public void setCatalog(Catalog clientCatalog){
+    public void setClientCatalog(Catalog clientCatalog){
         this.clientCatalog = clientCatalog;
+    }
+    public void setCatalog(Catalog catalog){
+        this.catalog = catalog;
     }
     @Override
     public void onCatalogUpdate(Catalog catalog) {
@@ -67,22 +71,22 @@ public class MainController implements CatalogUpdateListener {
         clientmoviesVBox.getChildren().clear();
         clientbooksVBox.getChildren().clear();
         clientaudiobooksVBox.getChildren().clear();
-        setCatalog(catalog);
+        setClientCatalog(catalog);
         for(Book book : client.getClientCatalog().books){
             CheckBox checkBox = new CheckBox(book.toString());
-            bookVBox.getChildren().add(checkBox);
+            clientbooksVBox.getChildren().add(checkBox);
         }
         for(Movie movie : client.getClientCatalog().movies){
             CheckBox checkBox = new CheckBox(movie.toString());
-            movieVBox.getChildren().add(checkBox);
+            clientmoviesVBox.getChildren().add(checkBox);
         }
         for(Game game : client.getClientCatalog().games){
             CheckBox checkBox = new CheckBox(game.toString());
-            gameVBox.getChildren().add(checkBox);
+            clientgamesVBox.getChildren().add(checkBox);
         }
         for(AudioBooks audioBook : client.getClientCatalog().audioBooks){
             CheckBox checkBox = new CheckBox(audioBook.toString());
-            audioVBox.getChildren().add(checkBox);
+            clientaudiobooksVBox.getChildren().add(checkBox);
         }
     }
 
