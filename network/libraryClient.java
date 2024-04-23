@@ -95,23 +95,31 @@ public class libraryClient {
                             Book book = (Book) recievedObject;
                             clientStorage.addBook(book);
                             System.out.println(book);
+                            Platform.runLater(() -> {
+                                notifyCatalogClientCatalog();
+                            });
                         } else if (recievedObject instanceof Movie) {
                             Movie movie = (Movie) recievedObject;
                             clientStorage.addMovie(movie);
                             System.out.println(movie);
+                            Platform.runLater(() -> {
+                                notifyCatalogClientCatalog();
+                            });
                         } else if (recievedObject instanceof Game) {
                             Game game = (Game) recievedObject;
                             clientStorage.addGame(game);
                             System.out.println(game);
+                            Platform.runLater(() -> {
+                                notifyCatalogClientCatalog();
+                            });
                         } else if (recievedObject instanceof AudioBooks) {
                             AudioBooks audioBooks = (AudioBooks) recievedObject;
                             clientStorage.addAudioBook(audioBooks);
                             System.out.println(audioBooks);
+                            Platform.runLater(() -> {
+                                notifyCatalogClientCatalog();
+                            });
                         }
-                        updateCatalog(clientStorage);
-                        Platform.runLater(() -> {
-                            notifyCatalogClientCatalog();
-                        });
                     }
                     //ois.mark(1024);
                 }
