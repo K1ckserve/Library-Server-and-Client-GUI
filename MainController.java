@@ -49,13 +49,13 @@ public class MainController implements CatalogUpdateListener {
             audioVBox.getChildren().add(checkBox);
         }
     }
+    @FXML
     public void onRentAction(ActionEvent event) {
         for (Node node : bookVBox.getChildren()) {
             if (node instanceof CheckBox) {
                 CheckBox checkBox = (CheckBox) node;
                 if (checkBox.isSelected()) {
-                    // Checkbox is selected, perform action
-                    // Example: System.out.println(checkBox.getText() + " is selected");
+                    client.recieveAnItem(checkBox.getText(), "book");
                 }
             }
         }
@@ -63,8 +63,7 @@ public class MainController implements CatalogUpdateListener {
             if (node instanceof CheckBox) {
                 CheckBox checkBox = (CheckBox) node;
                 if (checkBox.isSelected()) {
-                    // Checkbox is selected, perform action
-                    // Example: System.out.println(checkBox.getText() + " is selected");
+                    client.recieveAnItem(checkBox.getText(), "movie");
                 }
             }
         }
@@ -72,8 +71,7 @@ public class MainController implements CatalogUpdateListener {
             if (node instanceof CheckBox) {
                 CheckBox checkBox = (CheckBox) node;
                 if (checkBox.isSelected()) {
-                    // Checkbox is selected, perform action
-                    // Example: System.out.println(checkBox.getText() + " is selected");
+                    client.recieveAnItem(checkBox.getText(), "game");
                 }
             }
         }
@@ -81,8 +79,7 @@ public class MainController implements CatalogUpdateListener {
             if (node instanceof CheckBox) {
                 CheckBox checkBox = (CheckBox) node;
                 if (checkBox.isSelected()) {
-                    // Checkbox is selected, perform action
-                    // Example: System.out.println(checkBox.getText() + " is selected");
+                    client.recieveAnItem(checkBox.getText(), "audiobook");
                 }
             }
         }

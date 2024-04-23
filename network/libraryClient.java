@@ -153,8 +153,10 @@ public class libraryClient {
             }
         }
     }
-    public void recieveAnItem(String item){
+    public void recieveAnItem(String item, String type){
         writer.println("message");
+        writer.flush();
+        writer.println(type);
         writer.flush();
         writer.println(item);
         writer.flush();

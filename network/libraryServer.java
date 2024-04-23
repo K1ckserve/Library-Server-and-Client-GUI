@@ -97,20 +97,36 @@ public class libraryServer {
                         System.out.println("RECEIVED: " + message);
                         if (message.equals("book")) {
                             for(Book b : ss.books){
-                                if(b.toString().equals(message)){
+                                String message1 = reader.readLine();
+                                if(b.toString().equals(message1)){
                                     sendABook(b, clientSocket);
-                                    ss.removeBook(ss.books.get(0));
+                                    ss.removeBook(b);
                                 }
                             }
                         } else if (message.equals("movie")) {
-                            sendAMovie(ss.movies.get(0), clientSocket);
-                            ss.removeMovie(ss.movies.get(0));
+                            for(Movie m : ss.movies){
+                                String message1 = reader.readLine();
+                                if(m.toString().equals(message1)){
+                                    sendAMovie(m, clientSocket);
+                                    ss.removeMovie(m);
+                                }
+                            }
                         } else if (message.equals("game")) {
-                            sendAGame(ss.games.get(0), clientSocket);
-                            ss.removeGame(ss.games.get(0));
+                            for(Game g : ss.games){
+                                String message1 = reader.readLine();
+                                if(g.toString().equals(message1)){
+                                    sendAGame(g, clientSocket);
+                                    ss.removeGame(g);
+                                }
+                            }
                         } else if (message.equals("audiobook")) {
-                            sendAAudioBook(ss.audioBooks.get(0), clientSocket);
-                            ss.removeAudioBook(ss.audioBooks.get(0));
+                            for(AudioBooks a : ss.audioBooks){
+                                String message1 = reader.readLine();
+                                if(a.toString().equals(message1)){
+                                    sendAAudioBook(a, clientSocket);
+                                    ss.removeAudioBook(a);
+                                }
+                            }
                         }
                     } else {
                         ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream());
