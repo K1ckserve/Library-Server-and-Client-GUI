@@ -14,7 +14,7 @@ public class libraryClient {
     private Catalog catalog = new Catalog();
     private CatalogUpdateListener listener;
 
-
+//what the fuckl
 
     public libraryClient() throws IOException {
     }
