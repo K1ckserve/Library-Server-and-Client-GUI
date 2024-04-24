@@ -137,21 +137,30 @@ public class libraryClient {
         writer.flush();
     }
     public void sendABook(Book book) throws IOException {
+        writer.println("object");
+        writer.flush();
         ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
         oos.writeObject(book);
         oos.flush();
+        notifyCatalogClientCatalog();
     }
     public void sendAMovie(Movie movie, Socket clientSocket) throws IOException {
+        writer.println("object");
+        writer.flush();
         ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream());
         oos.writeObject(movie);
         oos.flush();
     }
     public void sendAGame(Game game, Socket clientSocket) throws IOException {
+        writer.println("object");
+        writer.flush();
         ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream());
         oos.writeObject(game);
         oos.flush();
     }
     public void sendAAudioBook(AudioBooks audioBooks, Socket clientSocket) throws IOException {
+        writer.println("object");
+        writer.flush();
         ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream());
         oos.writeObject(audioBooks);
         oos.flush();

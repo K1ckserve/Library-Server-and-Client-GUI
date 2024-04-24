@@ -6,6 +6,8 @@ import javafx.scene.layout.VBox;
 import network.*;
 
 import java.awt.event.ActionEvent;
+import java.io.IOException;
+import java.util.Iterator;
 
 public class MainController implements CatalogUpdateListener {
     @FXML
@@ -125,12 +127,20 @@ public class MainController implements CatalogUpdateListener {
             }
         }
     }
-    public void onReturnAction(javafx.event.ActionEvent actionEvent) {
+    public void onReturnAction(javafx.event.ActionEvent actionEvent) throws IOException {
         for (Node node : clientbooksVBox.getChildren()) {
             if (node instanceof CheckBox) {
                 CheckBox checkBox = (CheckBox) node;
                 if (checkBox.isSelected()) {
-                    //client.sendABook(clientCatalog.books.contains);
+                    Iterator<Book> iterator = clientCatalog.books.iterator();
+                    while (iterator.hasNext()) {
+                        Book b = iterator.next();
+                        if (b.toString().equals(checkBox.getText())) {
+                            client.sendABook(b);
+                            iterator.remove(); // Remove the current item using iterator
+                            break; // Exit the loop after removing the item
+                        }
+                    }
                 }
             }
         }
