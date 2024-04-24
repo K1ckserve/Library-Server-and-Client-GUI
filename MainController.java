@@ -128,7 +128,7 @@ public class MainController implements CatalogUpdateListener {
             if (node instanceof CheckBox) {
                 CheckBox checkBox = (CheckBox) node;
                 if (checkBox.isSelected()) {
-                    Iterator<Book> iterator = clientCatalog.books.iterator();
+                    Iterator<Book> iterator = client.getClientCatalog().books.iterator();
                     while (iterator.hasNext()) {
                         Book b = iterator.next();
                         if (b.toString().equals(checkBox.getText())) {
