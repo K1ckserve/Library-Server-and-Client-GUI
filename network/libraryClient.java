@@ -14,7 +14,7 @@ public class libraryClient {
     private Catalog catalog = new Catalog();
     private CatalogUpdateListener listener;
 
-    //Socket socket = new Socket("192.168.1.151", 1025);
+
 
     public libraryClient() throws IOException {
     }
