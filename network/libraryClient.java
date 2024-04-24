@@ -4,6 +4,8 @@ import javafx.application.Platform;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class libraryClient {
     private Socket socket;
@@ -16,20 +18,20 @@ public class libraryClient {
 
     public libraryClient() throws IOException {
     }
+
     public void setCatalogUpdateListener(CatalogUpdateListener listener) {
         this.listener = listener;
     }
-    private void updateListenerCatalog(){
-        notifyCatalogUpdate();
-    }
-    private void notifyCatalogUpdate() {
+    private synchronized void notifyCatalogUpdate() {
         if(listener != null) {
             listener.onCatalogUpdate(catalog);
         }
     }
     private void notifyCatalogClientCatalog(){
-        if(listener != null){
-            listener.onClientCatalogUpdate(clientCatalog);
+        synchronized(this) {
+            if(listener != null){
+                listener.onClientCatalogUpdate(clientCatalog);
+            }
         }
     }
     public void connectToServer(String ipAddress, int port) throws IOException {
@@ -88,7 +90,7 @@ public class libraryClient {
                                 cat = (Catalog) recievedObject;
                                 libraryClient.this.updateCatalog(cat);
                                 Platform.runLater(() -> {
-                                    updateListenerCatalog();
+                                    notifyCatalogUpdate();
                                 });
                             }
                         } else if (recievedObject instanceof Book) {
@@ -121,7 +123,6 @@ public class libraryClient {
                             });
                         }
                     }
-                    //ois.mark(1024);
                 }
             } catch (IOException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
@@ -142,7 +143,6 @@ public class libraryClient {
         ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
         oos.writeObject(book);
         oos.flush();
-        notifyCatalogClientCatalog();
     }
     public void sendAMovie(Movie movie) throws IOException {
         writer.println("object");
@@ -150,7 +150,6 @@ public class libraryClient {
         ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
         oos.writeObject(movie);
         oos.flush();
-        notifyCatalogClientCatalog();
     }
     public void sendAGame(Game game) throws IOException {
         writer.println("object");
@@ -158,7 +157,6 @@ public class libraryClient {
         ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
         oos.writeObject(game);
         oos.flush();
-        notifyCatalogClientCatalog();
     }
     public void sendAAudioBook(AudioBooks audioBooks) throws IOException {
         writer.println("object");
@@ -166,7 +164,7 @@ public class libraryClient {
         ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
         oos.writeObject(audioBooks);
         oos.flush();
-        notifyCatalogClientCatalog();
+
     }
 
 }

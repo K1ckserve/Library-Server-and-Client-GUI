@@ -7,7 +7,9 @@ import network.*;
 
 import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class MainController implements CatalogUpdateListener {
     @FXML
@@ -49,7 +51,7 @@ public class MainController implements CatalogUpdateListener {
         movieVBox.getChildren().clear();
         gameVBox.getChildren().clear();
         audioVBox.getChildren().clear();
-        setCatalog(catalog);
+        //setCatalog(catalog);
         for(Book book : client.getCatalog().books){
             CheckBox checkBox = new CheckBox(book.toString());
             bookVBox.getChildren().add(checkBox);
@@ -74,22 +76,24 @@ public class MainController implements CatalogUpdateListener {
         clientbooksVBox.getChildren().clear();
         clientgamesVBox.getChildren().clear();
         clientaudiobooksVBox.getChildren().clear();
-        setClientCatalog(catalog);
-        for(Book book : client.getClientCatalog().books){
-            CheckBox checkBox = new CheckBox(book.toString());
-            clientbooksVBox.getChildren().add(checkBox);
-        }
-        for(Movie movie : client.getClientCatalog().movies){
-            CheckBox checkBox = new CheckBox(movie.toString());
-            clientmoviesVBox.getChildren().add(checkBox);
-        }
-        for(Game game : client.getClientCatalog().games){
-            CheckBox checkBox = new CheckBox(game.toString());
-            clientgamesVBox.getChildren().add(checkBox);
-        }
-        for(AudioBooks audioBook : client.getClientCatalog().audioBooks){
-            CheckBox checkBox = new CheckBox(audioBook.toString());
-            clientaudiobooksVBox.getChildren().add(checkBox);
+        //setClientCatalog(catalog);
+        synchronized (this) {
+            for (Book book : client.getClientCatalog().books) {
+                CheckBox checkBox = new CheckBox(book.toString());
+                clientbooksVBox.getChildren().add(checkBox);
+            }
+            for (Movie movie : client.getClientCatalog().movies) {
+                CheckBox checkBox = new CheckBox(movie.toString());
+                clientmoviesVBox.getChildren().add(checkBox);
+            }
+            for (Game game : client.getClientCatalog().games) {
+                CheckBox checkBox = new CheckBox(game.toString());
+                clientgamesVBox.getChildren().add(checkBox);
+            }
+            for (AudioBooks audioBook : client.getClientCatalog().audioBooks) {
+                CheckBox checkBox = new CheckBox(audioBook.toString());
+                clientaudiobooksVBox.getChildren().add(checkBox);
+            }
         }
     }
 
@@ -192,5 +196,6 @@ public class MainController implements CatalogUpdateListener {
                 }
             }
         }
+        onClientCatalogUpdate(clientCatalog);
     }
 }
