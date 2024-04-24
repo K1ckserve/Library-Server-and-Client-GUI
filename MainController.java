@@ -43,6 +43,7 @@ public class MainController implements CatalogUpdateListener {
         movieVBox.getChildren().clear();
         gameVBox.getChildren().clear();
         audioVBox.getChildren().clear();
+        //setCatalog(catalog);
         for(Book book : client.getCatalog().books){
             CheckBox checkBox = new CheckBox(book.toString());
             bookVBox.getChildren().add(checkBox);
