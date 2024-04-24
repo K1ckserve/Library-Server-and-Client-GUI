@@ -37,7 +37,7 @@ public class Controller {
             Parent root = loader.load();
             MainController mainContr = loader.getController();
             client.setCatalogUpdateListener(mainContr);
-            mainContr.initialize(client, client.getCatalog());
+            mainContr.initialize(client);
 
             // Get the current stage
             Stage stage = (Stage) Login.getScene().getWindow();
