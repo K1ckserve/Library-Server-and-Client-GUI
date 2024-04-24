@@ -144,7 +144,7 @@ public class MainController implements CatalogUpdateListener {
             if (node instanceof CheckBox) {
                 CheckBox checkBox = (CheckBox) node;
                 if (checkBox.isSelected()) {
-                    Iterator<Movie> iterator = clientCatalog.movies.iterator();
+                    Iterator<Movie> iterator = client.getClientCatalog().movies.iterator();
                     while (iterator.hasNext()) {
                         Movie m = iterator.next();
                         if (m.toString().equals(checkBox.getText())) {
@@ -160,7 +160,7 @@ public class MainController implements CatalogUpdateListener {
             if (node instanceof CheckBox) {
                 CheckBox checkBox = (CheckBox) node;
                 if (checkBox.isSelected()) {
-                    Iterator<Game> iterator = clientCatalog.games.iterator();
+                    Iterator<Game> iterator = client.getClientCatalog().games.iterator();
                     while (iterator.hasNext()) {
                         Game g = iterator.next();
                         if (g.toString().equals(checkBox.getText())) {
@@ -176,7 +176,7 @@ public class MainController implements CatalogUpdateListener {
             if (node instanceof CheckBox) {
                 CheckBox checkBox = (CheckBox) node;
                 if (checkBox.isSelected()) {
-                    Iterator<AudioBooks> iterator = clientCatalog.audioBooks.iterator();
+                    Iterator<AudioBooks> iterator = client.getClientCatalog().audioBooks.iterator();
                     while (iterator.hasNext()) {
                         AudioBooks a = iterator.next();
                         if (a.toString().equals(checkBox.getText())) {
@@ -188,6 +188,6 @@ public class MainController implements CatalogUpdateListener {
                 }
             }
         }
-        onClientCatalogUpdate(clientCatalog);
+        onClientCatalogUpdate(client.getClientCatalog());
     }
 }
