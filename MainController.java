@@ -144,5 +144,53 @@ public class MainController implements CatalogUpdateListener {
                 }
             }
         }
+        for(Node node : clientmoviesVBox.getChildren()) {
+            if (node instanceof CheckBox) {
+                CheckBox checkBox = (CheckBox) node;
+                if (checkBox.isSelected()) {
+                    Iterator<Movie> iterator = clientCatalog.movies.iterator();
+                    while (iterator.hasNext()) {
+                        Movie m = iterator.next();
+                        if (m.toString().equals(checkBox.getText())) {
+                            client.sendAMovie(m);
+                            iterator.remove();
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        for(Node node : clientgamesVBox.getChildren()) {
+            if (node instanceof CheckBox) {
+                CheckBox checkBox = (CheckBox) node;
+                if (checkBox.isSelected()) {
+                    Iterator<Game> iterator = clientCatalog.games.iterator();
+                    while (iterator.hasNext()) {
+                        Game g = iterator.next();
+                        if (g.toString().equals(checkBox.getText())) {
+                            client.sendAGame(g);
+                            iterator.remove();
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        for(Node node : clientaudiobooksVBox.getChildren()) {
+            if (node instanceof CheckBox) {
+                CheckBox checkBox = (CheckBox) node;
+                if (checkBox.isSelected()) {
+                    Iterator<AudioBooks> iterator = clientCatalog.audioBooks.iterator();
+                    while (iterator.hasNext()) {
+                        AudioBooks a = iterator.next();
+                        if (a.toString().equals(checkBox.getText())) {
+                            client.sendAAudioBook(a);
+                            iterator.remove();
+                            break;
+                        }
+                    }
+                }
+            }
+        }
     }
 }
