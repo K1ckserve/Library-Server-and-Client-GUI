@@ -33,17 +33,9 @@ public class MainController implements CatalogUpdateListener {
     @FXML
     private VBox clientgamesVBox;
     private libraryClient client;
-    private Catalog clientCatalog;
-    private Catalog catalog;
-    public void initialize(libraryClient client, Catalog clientCatalog) {
+
+    public void initialize(libraryClient client) {
         this.client = client;
-        this.clientCatalog = clientCatalog;
-    }
-    public void setClientCatalog(Catalog clientCatalog){
-        this.clientCatalog = clientCatalog;
-    }
-    public void setCatalog(Catalog catalog){
-        this.catalog = catalog;
     }
     @Override
     public void onCatalogUpdate(Catalog catalog) {
