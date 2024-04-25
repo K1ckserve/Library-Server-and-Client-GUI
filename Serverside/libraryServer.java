@@ -1,4 +1,6 @@
-package network;
+package Serverside;
+
+import network.*;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -97,6 +99,7 @@ public class libraryServer {
                 while ((datatype = reader.readLine()) != null) {
                     synchronized (this) {
                         Catalog ff = new Catalog();
+                        System.out.println(datatype);
                         if (datatype.equals("message")) {
                             String message = reader.readLine();
                             System.out.println("RECEIVED: " + message);
@@ -149,7 +152,9 @@ public class libraryServer {
                             ff.copy(ss);
                             sendCatalog(ff, oos);
                         } else {
+                            //ois.reset();
                             System.out.println("made it here");
+                            System.out.println(reader.readLine());
                             Object recievedObject = ois.readObject();
                             if (recievedObject != null) {
                                 if (recievedObject instanceof Book) {
