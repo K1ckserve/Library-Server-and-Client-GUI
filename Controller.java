@@ -30,7 +30,7 @@ public class Controller {
         String usernam = username.getText();
         String passwor = password.getText();
         try{
-            client.connectToServer("192.168.1.151", 1025);
+            client.connectToServer("192.168.1.200", 1025);
             client.sendLoginCredentials(usernam, passwor);
             client.setupNetworking();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Main.fxml"));

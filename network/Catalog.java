@@ -20,6 +20,12 @@ public class Catalog implements Serializable {
     public synchronized void addGame(Game game) {
         games.add(game);
     }
+    public synchronized void copy(Catalog catalog) {
+        books.addAll(catalog.books);
+        movies.addAll(catalog.movies);
+        audioBooks.addAll(catalog.audioBooks);
+        games.addAll(catalog.games);
+    }
     public synchronized void removeBook(Book book) {
         books.remove(book);
     }

@@ -8,11 +8,13 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class libraryClient {
-    private Socket socket;
+    public Socket socket;
     private PrintWriter writer;
     private Catalog clientCatalog = new Catalog();
     private Catalog catalog = new Catalog();
     private CatalogUpdateListener listener;
+    private ObjectInputStream ois;
+    private ObjectOutputStream oos;
 
 //what the fuckl
 
@@ -29,20 +31,22 @@ public class libraryClient {
     }
     private void notifyCatalogClientCatalog(){
         synchronized(this) {
+            Catalog c = new Catalog();
+            c.copy(clientCatalog);
             if(listener != null){
-                listener.onClientCatalogUpdate(clientCatalog);
+                listener.onClientCatalogUpdate(c);
             }
         }
     }
     public void connectToServer(String ipAddress, int port) throws IOException {
         socket = new Socket(ipAddress, port);
         writer = new PrintWriter(socket.getOutputStream(), true);
+        oos = new ObjectOutputStream(socket.getOutputStream());
+        ois = new ObjectInputStream(socket.getInputStream());
     }
     public void sendLoginCredentials(String username, String password) throws IOException {
         writer.println(username);
-        writer.flush();
         writer.println(password);
-        writer.flush();
     }
     public static void main(String[] args) throws IOException {
         new libraryClient().setupNetworking();
@@ -79,9 +83,7 @@ public class libraryClient {
         @Override
         public void run() {
             try {
-                //ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
                 while(true){
-                    ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
                     Object recievedObject =  ois.readObject();
                     if(recievedObject != null) {
                         if (recievedObject instanceof Catalog) {
@@ -140,28 +142,25 @@ public class libraryClient {
     public void sendABook(Book book) throws IOException {
         writer.println("object");
         writer.flush();
-        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
         oos.writeObject(book);
         oos.flush();
+
     }
     public void sendAMovie(Movie movie) throws IOException {
         writer.println("object");
         writer.flush();
-        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
         oos.writeObject(movie);
         oos.flush();
     }
     public void sendAGame(Game game) throws IOException {
         writer.println("object");
         writer.flush();
-        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
         oos.writeObject(game);
         oos.flush();
     }
     public void sendAAudioBook(AudioBooks audioBooks) throws IOException {
         writer.println("object");
         writer.flush();
-        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
         oos.writeObject(audioBooks);
         oos.flush();
 
