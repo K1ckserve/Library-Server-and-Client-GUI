@@ -123,7 +123,7 @@ public class MainController implements CatalogUpdateListener {
             }
         }
     }
-    public void onReturnAction(javafx.event.ActionEvent actionEvent) throws IOException {
+    public void onReturnAction(javafx.event.ActionEvent actionEvent) throws IOException, InterruptedException {
         for (Node node : clientbooksVBox.getChildren()) {
             if (node instanceof CheckBox) {
                 CheckBox checkBox = (CheckBox) node;
@@ -132,7 +132,7 @@ public class MainController implements CatalogUpdateListener {
                     while (iterator.hasNext()) {
                         Book b = iterator.next();
                         if (b.toString().equals(checkBox.getText())) {
-                            client.sendABook(b);
+                            client.sendAObject(b);
                             iterator.remove(); // Remove the current item using iterator
                             break; // Exit the loop after removing the item
                         }
@@ -148,7 +148,7 @@ public class MainController implements CatalogUpdateListener {
                     while (iterator.hasNext()) {
                         Movie m = iterator.next();
                         if (m.toString().equals(checkBox.getText())) {
-                            client.sendAMovie(m);
+                            client.sendAObject(m);
                             iterator.remove();
                             break;
                         }
@@ -164,7 +164,7 @@ public class MainController implements CatalogUpdateListener {
                     while (iterator.hasNext()) {
                         Game g = iterator.next();
                         if (g.toString().equals(checkBox.getText())) {
-                            client.sendAGame(g);
+                            client.sendAObject(g);
                             iterator.remove();
                             break;
                         }
@@ -180,7 +180,7 @@ public class MainController implements CatalogUpdateListener {
                     while (iterator.hasNext()) {
                         AudioBooks a = iterator.next();
                         if (a.toString().equals(checkBox.getText())) {
-                            client.sendAAudioBook(a);
+                            client.sendAObject(a);
                             iterator.remove();
                             break;
                         }

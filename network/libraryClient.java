@@ -55,7 +55,6 @@ public class libraryClient {
     public void setupNetworking() {
         try {
             System.out.println("network established");
-            //BufferedReader reader = new BufferedReader((new InputStreamReader(socket.getInputStream())));
             Thread objReader = new Thread(new reciever (socket,clientCatalog,catalog));
             objReader.start();
         } catch (IOException ioe) {
@@ -139,33 +138,13 @@ public class libraryClient {
         writer.println(item);
         writer.flush();
     }
-    public void sendABook(Book book) throws IOException {
+    public void sendAObject(Object book) throws IOException, InterruptedException {
+        oos.reset();
         writer.println("object");
         writer.flush();
         oos.writeObject(book);
         oos.flush();
-
     }
-    public void sendAMovie(Movie movie) throws IOException {
-        writer.println("object");
-        writer.flush();
-        oos.writeObject(movie);
-        oos.flush();
-    }
-    public void sendAGame(Game game) throws IOException {
-        writer.println("object");
-        writer.flush();
-        oos.writeObject(game);
-        oos.flush();
-    }
-    public void sendAAudioBook(AudioBooks audioBooks) throws IOException {
-        writer.println("object");
-        writer.flush();
-        oos.writeObject(audioBooks);
-        oos.flush();
-
-    }
-
 }
 class user{
    private String username;
