@@ -8,16 +8,15 @@ import java.net.Socket;
 import java.util.*;
 
 public class libraryServer {
-    private ArrayList<user> history = new ArrayList<>();
-    public Map<String, String> userPass = new HashMap<>();
-    private List<ObjectOutputStream> updates = new ArrayList<>();
 
     public static void main(String[] args) {
         new libraryServer().setupNetworking();
     }
-
+    public Map<String, String> userPass = new HashMap<>();
     List<Socket> sockets = new ArrayList<Socket>();
     Catalog ss = new Catalog();
+    private Map<user, Catalog> historyMap = new HashMap<>();
+    public List<user> users = new ArrayList<>();
 
     private void setupNetworking() {
         try {
@@ -35,8 +34,15 @@ public class libraryServer {
                 ss.addMovie(movie2);
                 ss.addGame(game);
                 ss.addAudioBook(audiobook);
-                user demo = new user("ben", "123");
+                user ben = new user("ben", "123");
+                user tan = new user("tan", "456");
+                users.add(ben);
+                users.add(tan);
                 userPass.put("ben", "123");
+                for(user u : users){
+                    historyMap.put(u, new Catalog());
+                }
+
 
 
                 // Optionally, output the objects to verify they've been read correctly
@@ -61,17 +67,31 @@ public class libraryServer {
                 //BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream());
                 ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream());
-                String username = (String) ois.readObject();
-                String password = (String) ois.readObject();
-                if (userPass.containsKey(username)) {
-                    if (userPass.get(username).equals(password)) {
-                        System.out.println("User " + username + " has been logged in.");
-                        ClientHandler clientHandler = new ClientHandler(clientSocket, ss, ois, oos);
-                        Thread t = new Thread(clientHandler); // Wrap ClientHandler in a Thread and start it
-                        sendCatalog(ss, oos);
-                        t.start();
+                Boolean loggedIn = false;
+                while(!loggedIn) {
+                    String username = (String) ois.readObject();
+                    String password = (String) ois.readObject();
+                    for (user u : users) {
+                        if (u.getUsername().equals(username) && u.getPassword().equals(password)) {
+                            System.out.println("User " + username + " has been logged in.");
+                            ClientHandler clientHandler = new ClientHandler(ss, ois, oos, u);
+                            Thread t = new Thread(clientHandler); // Wrap ClientHandler in a Thread and start it
+                            sendCatalog(ss, oos);
+                            t.start();
+                            loggedIn = true;
+                            break;
+                        }
                     }
                 }
+//                if (userPass.containsKey(username)) {
+//                    if (userPass.get(username).equals(password)) {
+//                        System.out.println("User " + username + " has been logged in.");
+//                        ClientHandler clientHandler = new ClientHandler(ss,ois,oos,ben);
+//                        Thread t = new Thread(clientHandler); // Wrap ClientHandler in a Thread and start it
+//                        sendCatalog(ss, oos);
+//                        t.start();
+//                    }
+//                }
             }
         } catch (IOException ioe) {
         } catch (ClassNotFoundException e) {
@@ -81,16 +101,18 @@ public class libraryServer {
 
     class ClientHandler implements Runnable {
 
-        private final Socket clientSocket;
         private Catalog ss;
         private final ObjectInputStream ois;
         private final ObjectOutputStream oos;
+        private final user use;
+        private Catalog userCatalog = new Catalog();
 
-        ClientHandler(Socket clientSocket, Catalog ss, ObjectInputStream ois, ObjectOutputStream oos) throws IOException {
+        ClientHandler(Catalog ss, ObjectInputStream ois, ObjectOutputStream oos, user use) throws IOException {
             this.ois = ois;
             this.oos = oos;
-            this.clientSocket = clientSocket;
             this.ss = ss;
+            this.use = use;
+            sendUserCatalog(historyMap.get(use),oos);
         }
 
         public void run() {
@@ -110,6 +132,7 @@ public class libraryServer {
                                     Book b = iterator.next();
                                     if (b.toString().equals(message1)) {
                                         sendAObject(b, oos);
+                                        historyMap.get(use).books.add(b);
                                         iterator.remove(); // Remove the current item using iterator
                                         //sendCatalog(ss, oos);
                                         break; // Exit the loop after removing the item
@@ -122,6 +145,7 @@ public class libraryServer {
                                     Movie m = iterator.next();
                                     if (m.toString().equals(message1)) {
                                         sendAObject(m, oos);
+                                        //historyMap.get(use).movies.add(m);
                                         iterator.remove();
                                         break;
                                     }
@@ -133,6 +157,7 @@ public class libraryServer {
                                     Game g = iterator.next();
                                     if (g.toString().equals(message1)) {
                                         sendAObject(g, oos);
+                                        //historyMap.get(use).games.add(g);
                                         iterator.remove(); // Remove the current item using iterator
                                         break; // Exit the loop after removing the item
                                     }
@@ -144,6 +169,7 @@ public class libraryServer {
                                     AudioBooks a = iterator.next();
                                     if (a.toString().equals(message1)) {
                                         sendAObject(a, oos);
+                                        //historyMap.get(use).audioBooks.add(a);
                                         iterator.remove(); // Remove the current item using iterator
                                         break; // Exit the loop after removing the item
                                     }
@@ -161,18 +187,22 @@ public class libraryServer {
                                 if (recievedObject instanceof Book) {
                                     Book book = (Book) recievedObject;
                                     ss.addBook(book);
+                                    //historyMap.get(use).books.remove(book);
                                     System.out.println(book);
                                 } else if (recievedObject instanceof Movie) {
                                     Movie movie = (Movie) recievedObject;
                                     ss.addMovie(movie);
+                                    //historyMap.get(use).movies.remove(movie);
                                     System.out.println(movie);
                                 } else if (recievedObject instanceof Game) {
                                     Game game = (Game) recievedObject;
                                     ss.addGame(game);
+                                    //historyMap.get(use).games.remove(game);
                                     System.out.println(game);
                                 } else if (recievedObject instanceof AudioBooks) {
                                     AudioBooks audioBooks = (AudioBooks) recievedObject;
                                     ss.addAudioBook(audioBooks);
+                                    //historyMap.get(use).audioBooks.remove(audioBooks);
                                     System.out.println(audioBooks);
                                 }
                             }
@@ -190,44 +220,18 @@ public class libraryServer {
     public void sendCatalog(Catalog c, ObjectOutputStream oos) throws IOException {
         oos.writeObject(c);
         oos.flush();
+        oos.writeObject("server");
+        oos.flush();
     }
-
-    class CatalogSender implements Runnable {
-        public ObjectOutputStream oos;
-
-        public CatalogSender(ObjectOutputStream oos) {
-            this.oos = oos;
-        }
-
-        public void run() {
-            try {
-                while (true) {
-                    Thread.sleep(1000); // Adjust the interval as needed (currently every 5 seconds)
-                    oos.writeObject(ss);
-                    oos.flush();
-                }
-            } catch (InterruptedException | IOException e) {
-                e.printStackTrace();
-            }
-        }
+    public void sendUserCatalog(Catalog c, ObjectOutputStream oos) throws IOException {
+        oos.writeObject(c);
+        oos.flush();
+        oos.writeObject("user");
+        oos.flush();
     }
 
     public void sendAObject(Object book, ObjectOutputStream oos) throws IOException {
         oos.writeObject(book);
         oos.flush();
     }
-//    public void sendAMovie(Movie movie, ObjectOutputStream oos) throws IOException {
-//        oos.writeObject(movie);
-//        oos.flush();
-//    }
-//    public void sendAGame(Game game, ObjectOutputStream oos) throws IOException {
-//        oos.writeObject(game);
-//        oos.flush();
-//    }
-//    public void sendAAudioBook(AudioBooks audioBooks, ObjectOutputStream oos) throws IOException {
-//        oos.writeObject(audioBooks);
-//        oos.flush();
-//    }
-//}
-//
 }

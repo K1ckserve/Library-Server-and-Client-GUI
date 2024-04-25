@@ -40,13 +40,14 @@ public class libraryClient {
     }
     public void connectToServer(String ipAddress, int port) throws IOException {
         socket = new Socket(ipAddress, port);
-        //writer = new PrintWriter(socket.getOutputStream(), true);
         oos = new ObjectOutputStream(socket.getOutputStream());
         ois = new ObjectInputStream(socket.getInputStream());
     }
     public void sendLoginCredentials(String username, String password) throws IOException {
         oos.writeObject(username);
+        oos.flush();
         oos.writeObject(password);
+        oos.flush();
     }
     public static void main(String[] args) throws IOException {
         new libraryClient().setupNetworking();
@@ -87,12 +88,21 @@ public class libraryClient {
                     if(recievedObject != null) {
                         if (recievedObject instanceof Catalog) {
                             Catalog c = (Catalog) recievedObject;
-                            if (!(cat.books.size() == c.books.size() && cat.movies.size() == c.movies.size() && cat.games.size() == c.games.size() && cat.audioBooks.size() == c.audioBooks.size())) {
-                                cat = (Catalog) recievedObject;
-                                libraryClient.this.updateCatalog(cat);
+                            String serOrClient = (String) ois.readObject();
+                            if(serOrClient.equals("user")) {
+                                clientStorage.copy(c);
                                 Platform.runLater(() -> {
-                                    notifyCatalogUpdate();
+                                    notifyCatalogClientCatalog();
                                 });
+                            }
+                            else {
+                                if (!(cat.books.size() == c.books.size() && cat.movies.size() == c.movies.size() && cat.games.size() == c.games.size() && cat.audioBooks.size() == c.audioBooks.size())) {
+                                    cat = (Catalog) recievedObject;
+                                    libraryClient.this.updateCatalog(cat);
+                                    Platform.runLater(() -> {
+                                        notifyCatalogUpdate();
+                                    });
+                                }
                             }
                         } else if (recievedObject instanceof Book) {
                             Book book = (Book) recievedObject;
