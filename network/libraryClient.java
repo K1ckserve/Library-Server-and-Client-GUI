@@ -9,7 +9,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class libraryClient {
     public Socket socket;
-    private PrintWriter writer;
+    //private PrintWriter writer;
     private Catalog clientCatalog = new Catalog();
     private Catalog catalog = new Catalog();
     private CatalogUpdateListener listener;
@@ -40,13 +40,13 @@ public class libraryClient {
     }
     public void connectToServer(String ipAddress, int port) throws IOException {
         socket = new Socket(ipAddress, port);
-        writer = new PrintWriter(socket.getOutputStream(), true);
+        //writer = new PrintWriter(socket.getOutputStream(), true);
         oos = new ObjectOutputStream(socket.getOutputStream());
         ois = new ObjectInputStream(socket.getInputStream());
     }
     public void sendLoginCredentials(String username, String password) throws IOException {
-        writer.println(username);
-        writer.println(password);
+        oos.writeObject(username);
+        oos.writeObject(password);
     }
     public static void main(String[] args) throws IOException {
         new libraryClient().setupNetworking();
@@ -130,19 +130,19 @@ public class libraryClient {
             }
         }
     }
-    public synchronized void recieveAnItem(String item, String type){
-        writer.println("message");
-        writer.flush();
-        writer.println(type);
-        writer.flush();
-        writer.println(item);
-        writer.flush();
+    public synchronized void recieveAnItem(String item, String type) throws IOException {
+        oos.writeObject("message");
+        oos.flush();
+        oos.writeObject(type);
+        oos.flush();
+        oos.writeObject(item);
+        oos.flush();
     }
     public synchronized void sendAObject(Object book) throws IOException, InterruptedException {
         oos.reset();
-        writer.println("object");
-        writer.println(book.toString());
-        writer.flush();
+        oos.writeObject("object");
+        oos.flush();
+        oos.writeObject(book.toString());
         oos.writeObject(book);
         oos.flush();
     }

@@ -89,7 +89,7 @@ public class MainController implements CatalogUpdateListener {
         }
     }
 
-    public void onRentAction(javafx.event.ActionEvent actionEvent) {
+    public void onRentAction(javafx.event.ActionEvent actionEvent) throws IOException {
         for (Node node : bookVBox.getChildren()) {
             if (node instanceof CheckBox) {
                 CheckBox checkBox = (CheckBox) node;

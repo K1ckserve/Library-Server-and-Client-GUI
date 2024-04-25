@@ -58,15 +58,15 @@ public class libraryServer {
                 System.out.println("incoming transmission");
 
                 sockets.add(clientSocket);
-                BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                //BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream());
                 ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream());
-                String username = reader.readLine();
-                String password = reader.readLine();
+                String username = (String) ois.readObject();
+                String password = (String) ois.readObject();
                 if (userPass.containsKey(username)) {
                     if (userPass.get(username).equals(password)) {
                         System.out.println("User " + username + " has been logged in.");
-                        ClientHandler clientHandler = new ClientHandler(clientSocket, ss, reader, ois, oos);
+                        ClientHandler clientHandler = new ClientHandler(clientSocket, ss, ois, oos);
                         Thread t = new Thread(clientHandler); // Wrap ClientHandler in a Thread and start it
                         sendCatalog(ss, oos);
                         t.start();
@@ -74,6 +74,8 @@ public class libraryServer {
                 }
             }
         } catch (IOException ioe) {
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -83,29 +85,27 @@ public class libraryServer {
         private Catalog ss;
         private final ObjectInputStream ois;
         private final ObjectOutputStream oos;
-        private final BufferedReader reader;
 
-        ClientHandler(Socket clientSocket, Catalog ss, BufferedReader r, ObjectInputStream ois, ObjectOutputStream oos) throws IOException {
+        ClientHandler(Socket clientSocket, Catalog ss, ObjectInputStream ois, ObjectOutputStream oos) throws IOException {
             this.ois = ois;
             this.oos = oos;
             this.clientSocket = clientSocket;
             this.ss = ss;
-            this.reader = r;
         }
 
         public void run() {
             try {
                 String datatype;
-                while ((datatype = reader.readLine()) != null) {
+                while ((datatype = (String) ois.readObject()) != null) {
                     synchronized (this) {
                         Catalog ff = new Catalog();
                         System.out.println(datatype);
                         if (datatype.equals("message")) {
-                            String message = reader.readLine();
+                            String message = (String) ois.readObject();
                             System.out.println("RECEIVED: " + message);
                             if (message.equals("book")) {
                                 Iterator<Book> iterator = ss.books.iterator();
-                                String message1 = reader.readLine();
+                                String message1 = (String) ois.readObject();
                                 while (iterator.hasNext()) {
                                     Book b = iterator.next();
                                     if (b.toString().equals(message1)) {
@@ -117,7 +117,7 @@ public class libraryServer {
                                 }
                             } else if (message.equals("movie")) {
                                 Iterator<Movie> iterator = ss.movies.iterator();
-                                String message1 = reader.readLine();
+                                String message1 = (String) ois.readObject();
                                 while (iterator.hasNext()) {
                                     Movie m = iterator.next();
                                     if (m.toString().equals(message1)) {
@@ -128,7 +128,7 @@ public class libraryServer {
                                 }
                             } else if (message.equals("game")) {
                                 Iterator<Game> iterator = ss.games.iterator();
-                                String message1 = reader.readLine();
+                                String message1 = (String) ois.readObject();
                                 while (iterator.hasNext()) {
                                     Game g = iterator.next();
                                     if (g.toString().equals(message1)) {
@@ -139,7 +139,7 @@ public class libraryServer {
                                 }
                             } else if (message.equals("audiobook")) {
                                 Iterator<AudioBooks> iterator = ss.audioBooks.iterator();
-                                String message1 = reader.readLine();
+                                String message1 = (String) ois.readObject();
                                 while (iterator.hasNext()) {
                                     AudioBooks a = iterator.next();
                                     if (a.toString().equals(message1)) {
@@ -154,7 +154,8 @@ public class libraryServer {
                         } else {
                             //ois.reset();
                             System.out.println("made it here");
-                            System.out.println(reader.readLine());
+                            String message = (String) ois.readObject();
+                            System.out.println(message);
                             Object recievedObject = ois.readObject();
                             if (recievedObject != null) {
                                 if (recievedObject instanceof Book) {
