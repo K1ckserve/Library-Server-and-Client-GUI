@@ -21,8 +21,9 @@ public class Controller {
 
     private libraryClient client;
 
-    public void initialize(libraryClient client) {
+    public void initialize(libraryClient client) throws IOException {
         this.client = client;
+        client.connectToServer("192.168.1.200", 1025);
     }
 
     @FXML
@@ -31,8 +32,7 @@ public class Controller {
         String passwor = password.getText();
         boolean loginSuccessful = false;
         try{
-            client.connectToServer("192.168.1.200", 1025);
-            client.sendLoginCredentials(usernam, passwor);
+            loginSuccessful = client.sendLoginCredentials(usernam, passwor);
             if (loginSuccessful) {
                 client.setupNetworking();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("Main.fxml"));
