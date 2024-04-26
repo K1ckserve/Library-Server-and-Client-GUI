@@ -90,17 +90,9 @@ public class libraryServer {
                     }else{
                         all.remove(oos);
                         clientSocket.close();
+                        break;
                     }
                 }
-//                if (userPass.containsKey(username)) {
-//                    if (userPass.get(username).equals(password)) {
-//                        System.out.println("User " + username + " has been logged in.");
-//                        ClientHandler clientHandler = new ClientHandler(ss,ois,oos,ben);
-//                        Thread t = new Thread(clientHandler); // Wrap ClientHandler in a Thread and start it
-//                        sendCatalog(ss, oos);
-//                        t.start();
-//                    }
-//                }
             }
         } catch (IOException ioe) {
         } catch (ClassNotFoundException e) {
