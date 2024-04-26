@@ -3,6 +3,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import network.*;
 
@@ -32,6 +33,8 @@ public class MainController implements CatalogUpdateListener {
     private VBox clientaudiobooksVBox;
     @FXML
     private VBox clientgamesVBox;
+    @FXML
+    private TextField user;
     private libraryClient client;
 
     public void initialize(libraryClient client) {
