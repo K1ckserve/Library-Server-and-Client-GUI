@@ -67,7 +67,7 @@ public class libraryServer {
                 //BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream());
                 ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream());
-                Boolean loggedIn = false;
+                boolean loggedIn = false;
                 while(!loggedIn) {
                     String username = (String) ois.readObject();
                     String password = (String) ois.readObject();
@@ -82,6 +82,7 @@ public class libraryServer {
                             break;
                         }
                     }
+                    oos.writeBoolean(loggedIn);
                 }
 //                if (userPass.containsKey(username)) {
 //                    if (userPass.get(username).equals(password)) {

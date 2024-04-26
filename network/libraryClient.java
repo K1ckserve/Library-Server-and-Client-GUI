@@ -43,11 +43,12 @@ public class libraryClient {
         oos = new ObjectOutputStream(socket.getOutputStream());
         ois = new ObjectInputStream(socket.getInputStream());
     }
-    public void sendLoginCredentials(String username, String password) throws IOException {
+    public boolean sendLoginCredentials(String username, String password) throws IOException {
         oos.writeObject(username);
         oos.flush();
         oos.writeObject(password);
         oos.flush();
+        return ois.readBoolean();
     }
     public static void main(String[] args) throws IOException {
         new libraryClient().setupNetworking();
