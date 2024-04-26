@@ -73,19 +73,24 @@ public class libraryServer {
                 while(!loggedIn) {
                     String username = (String) ois.readObject();
                     String password = (String) ois.readObject();
-                    for (user u : users) {
-                        if (u.getUsername().equals(username) && u.getPassword().equals(password)) {
-                            loggedIn = true;
-                            oos.writeObject(loggedIn);
-                            System.out.println("User " + username + " has been logged in.");
-                            ClientHandler clientHandler = new ClientHandler(ss, ois, oos, u);
-                            Thread t = new Thread(clientHandler); // Wrap ClientHandler in a Thread and start it
-                            sendCatalog(ss, oos);
-                            t.start();
-                            break;
+                    if(!(username.equals("logout") || password.equals("logout"))) {
+                        for (user u : users) {
+                            if (u.getUsername().equals(username) && u.getPassword().equals(password)) {
+                                loggedIn = true;
+                                oos.writeObject(loggedIn);
+                                System.out.println("User " + username + " has been logged in.");
+                                ClientHandler clientHandler = new ClientHandler(ss, ois, oos, u);
+                                Thread t = new Thread(clientHandler); // Wrap ClientHandler in a Thread and start it
+                                sendCatalog(ss, oos);
+                                t.start();
+                                break;
+                            }
                         }
+                        oos.writeObject(loggedIn);
+                    }else{
+                        all.remove(oos);
+                        clientSocket.close();
                     }
-                    oos.writeObject(loggedIn);
                 }
 //                if (userPass.containsKey(username)) {
 //                    if (userPass.get(username).equals(password)) {
