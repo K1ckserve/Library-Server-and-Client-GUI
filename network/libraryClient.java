@@ -50,6 +50,9 @@ public class libraryClient {
         oos.writeObject("logout");
         socket.close();
     }
+    public user getUser(){
+        return this.use;
+    }
     public void connectToServer(String ipAddress, int port) throws IOException {
         socket = new Socket(ipAddress, port);
         oos = new ObjectOutputStream(socket.getOutputStream());

@@ -5,6 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import network.*;
 
 import java.io.IOException;
@@ -34,11 +35,12 @@ public class MainController implements CatalogUpdateListener {
     @FXML
     private VBox clientgamesVBox;
     @FXML
-    private TextField user;
+    private Text user;
     private libraryClient client;
 
     public void initialize(libraryClient client) {
         this.client = client;
+        user.setText(client.getUser().toString() + "'s catalog");
     }
     @Override
     public void onCatalogUpdate(Catalog catalog) {

@@ -23,6 +23,6 @@ public class user implements Serializable {
    }
    @Override
     public String toString() {
-       return username + " " + password;
+       return username;
    }
 }
