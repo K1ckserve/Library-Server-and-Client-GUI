@@ -112,7 +112,7 @@ public class libraryServer {
             this.oos = oos;
             this.ss = ss;
             this.use = use;
-            sendUserCatalog(historyMap.get(use),oos);
+            sendUserCatalog(historyMap.get(use), oos);
         }
 
         public void run() {
@@ -145,7 +145,7 @@ public class libraryServer {
                                     Movie m = iterator.next();
                                     if (m.toString().equals(message1)) {
                                         sendAObject(m, oos);
-                                        //historyMap.get(use).movies.add(m);
+                                        historyMap.get(use).movies.add(m);
                                         iterator.remove();
                                         break;
                                     }
@@ -157,7 +157,7 @@ public class libraryServer {
                                     Game g = iterator.next();
                                     if (g.toString().equals(message1)) {
                                         sendAObject(g, oos);
-                                        //historyMap.get(use).games.add(g);
+                                        historyMap.get(use).games.add(g);
                                         iterator.remove(); // Remove the current item using iterator
                                         break; // Exit the loop after removing the item
                                     }
@@ -169,7 +169,7 @@ public class libraryServer {
                                     AudioBooks a = iterator.next();
                                     if (a.toString().equals(message1)) {
                                         sendAObject(a, oos);
-                                        //historyMap.get(use).audioBooks.add(a);
+                                        historyMap.get(use).audioBooks.add(a);
                                         iterator.remove(); // Remove the current item using iterator
                                         break; // Exit the loop after removing the item
                                     }
@@ -187,22 +187,29 @@ public class libraryServer {
                                 if (recievedObject instanceof Book) {
                                     Book book = (Book) recievedObject;
                                     ss.addBook(book);
-                                    //historyMap.get(use).books.remove(book);
+                                    Iterator<Book> iterator = historyMap.get(use).books.iterator();
+                                    while (iterator.hasNext()) {
+                                        Book b = iterator.next();
+                                        if (b.toString().equals(book.toString())) {
+                                            iterator.remove();
+                                            break;
+                                        }
+                                    }
                                     System.out.println(book);
                                 } else if (recievedObject instanceof Movie) {
                                     Movie movie = (Movie) recievedObject;
                                     ss.addMovie(movie);
-                                    //historyMap.get(use).movies.remove(movie);
+                                    historyMap.get(use).movies.remove(movie);
                                     System.out.println(movie);
                                 } else if (recievedObject instanceof Game) {
                                     Game game = (Game) recievedObject;
                                     ss.addGame(game);
-                                    //historyMap.get(use).games.remove(game);
+                                    historyMap.get(use).games.remove(game);
                                     System.out.println(game);
                                 } else if (recievedObject instanceof AudioBooks) {
                                     AudioBooks audioBooks = (AudioBooks) recievedObject;
                                     ss.addAudioBook(audioBooks);
-                                    //historyMap.get(use).audioBooks.remove(audioBooks);
+                                    historyMap.get(use).audioBooks.remove(audioBooks);
                                     System.out.println(audioBooks);
                                 }
                             }
@@ -211,7 +218,9 @@ public class libraryServer {
                         }
                     }
                 }
-            } catch (IOException | ClassNotFoundException e) {
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
         }
