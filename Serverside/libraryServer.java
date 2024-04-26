@@ -17,6 +17,7 @@ public class libraryServer {
     Catalog ss = new Catalog();
     private Map<user, Catalog> historyMap = new HashMap<>();
     public List<user> users = new ArrayList<>();
+    List<ObjectOutputStream> all = new ArrayList<>();
 
     private void setupNetworking() {
         try {
@@ -67,6 +68,7 @@ public class libraryServer {
                 //BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream());
                 ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream());
+                all.add(oos);
                 boolean loggedIn = false;
                 while(!loggedIn) {
                     String username = (String) ois.readObject();
@@ -250,10 +252,12 @@ public class libraryServer {
     }
 
     public void sendCatalog(Catalog c, ObjectOutputStream oos) throws IOException {
-        oos.writeObject(c);
-        oos.flush();
-        oos.writeObject("server");
-        oos.flush();
+        for(ObjectOutputStream sen : all){
+            sen.writeObject(c);
+            sen.flush();
+            sen.writeObject("server");
+            sen.flush();
+        }
     }
     public void sendUserCatalog(Catalog c, ObjectOutputStream oos) throws IOException {
         oos.writeObject(c);
