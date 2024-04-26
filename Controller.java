@@ -29,6 +29,7 @@ public class Controller {
     protected void loginButtonAction(ActionEvent event) throws IOException {
         String usernam = username.getText();
         String passwor = password.getText();
+        boolean loginSuccessful = false;
         try{
             client.connectToServer("192.168.1.200", 1025);
             loginSuccessful = client.sendLoginCredentials(usernam, passwor);
@@ -50,6 +51,7 @@ public class Controller {
                 stage.show();
             } else {
                 // Clear password field and prompt user to try again
+                username.clear();
                 password.clear();
                 // You can also display an error message to the user
                 // For example: errorMessageLabel.setText("Incorrect username or password. Please try again.");
