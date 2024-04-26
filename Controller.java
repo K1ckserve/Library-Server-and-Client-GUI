@@ -31,22 +31,29 @@ public class Controller {
         String passwor = password.getText();
         try{
             client.connectToServer("192.168.1.200", 1025);
-            while(!client.sendLoginCredentials(usernam, passwor)){}
-            client.setupNetworking();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Main.fxml"));
-            Parent root = loader.load();
-            MainController mainContr = loader.getController();
-            client.setCatalogUpdateListener(mainContr);
-            mainContr.initialize(client);
+            loginSuccessful = client.sendLoginCredentials(usernam, passwor);
+            if (loginSuccessful) {
+                client.setupNetworking();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("Main.fxml"));
+                Parent root = loader.load();
+                MainController mainContr = loader.getController();
+                client.setCatalogUpdateListener(mainContr);
+                mainContr.initialize(client);
 
-            // Get the current stage
-            Stage stage = (Stage) Login.getScene().getWindow();
+                // Get the current stage
+                Stage stage = (Stage) Login.getScene().getWindow();
 
-            // Set the scene to the next FXML file
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setTitle("Library");
-            stage.show();
+                // Set the scene to the next FXML file
+                Scene scene = new Scene(root);
+                stage.setScene(scene);
+                stage.setTitle("Library");
+                stage.show();
+            } else {
+                // Clear password field and prompt user to try again
+                password.clear();
+                // You can also display an error message to the user
+                // For example: errorMessageLabel.setText("Incorrect username or password. Please try again.");
+            }
         } catch(IOException e){
             e.printStackTrace();
         }
