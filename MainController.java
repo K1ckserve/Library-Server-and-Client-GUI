@@ -1,9 +1,13 @@
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import network.*;
@@ -41,15 +45,8 @@ public class MainController implements CatalogUpdateListener {
     public void initialize(libraryClient client) {
         this.client = client;
         user.setText(client.getUser().toString() + "'s catalog");
-        registerCheckBoxDoubleClickHandler(bookVBox);
-        registerCheckBoxDoubleClickHandler(movieVBox);
-        registerCheckBoxDoubleClickHandler(gameVBox);
-        registerCheckBoxDoubleClickHandler(audioVBox);
-        registerCheckBoxDoubleClickHandler(clientbooksVBox);
-        registerCheckBoxDoubleClickHandler(clientmoviesVBox);
-        registerCheckBoxDoubleClickHandler(clientgamesVBox);
-        registerCheckBoxDoubleClickHandler(clientaudiobooksVBox);
     }
+    // Method to show alert with details
     @Override
     public void onCatalogUpdate(Catalog catalog) {
         bookVBox.getChildren().clear();
