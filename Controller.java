@@ -18,6 +18,8 @@ public class Controller {
     private TextField username;
     @FXML
     private TextField password;
+    @FXML
+    private Button Logout;
 
     private libraryClient client;
 
