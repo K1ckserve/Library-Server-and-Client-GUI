@@ -13,7 +13,7 @@ import java.util.List;
 
 public class MainController implements CatalogUpdateListener {
     @FXML
-    private Button Return;
+    private Button Logout1;
     @FXML
     private Button rent;
     @FXML
