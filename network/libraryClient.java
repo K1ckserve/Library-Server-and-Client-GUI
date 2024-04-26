@@ -46,7 +46,7 @@ public class libraryClient {
     public boolean sendLoginCredentials(String username, String password) throws IOException, ClassNotFoundException {
         oos.writeObject(username);
         oos.writeObject(password);
-        boolean b = (boolean) ois.readObject();
+        return (boolean) ois.readObject();
     }
     public static void main(String[] args) throws IOException {
         new libraryClient().setupNetworking();
