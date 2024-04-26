@@ -93,5 +93,6 @@
       </Accordion>
       <Text layoutX="389.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Personal Catalog" />
       <Button fx:id="Return" layoutX="408.0" layoutY="343.0" mnemonicParsing="false" onAction="#onReturnAction" text="Return" />
+      <Button fx:id="Logout1" layoutX="14.0" layoutY="368.0" mnemonicParsing="false" onAction="#logoutAction" text="Quit" />
    </children>
 </AnchorPane>

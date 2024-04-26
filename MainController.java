@@ -1,3 +1,4 @@
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -5,7 +6,6 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.layout.VBox;
 import network.*;
 
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -189,5 +189,9 @@ public class MainController implements CatalogUpdateListener {
             }
         }
         onClientCatalogUpdate(client.getClientCatalog());
+    }
+    @FXML
+    protected void logoutAction(ActionEvent event) throws IOException {
+        client.disconnectLogin();
     }
 }
