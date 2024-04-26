@@ -64,8 +64,8 @@ public class Controller {
             throw new RuntimeException(e);
         }
         @FXML
-        protected void logoutAction(ActionEven event) throws IOexception{
-            client.disconnect();
+        protected void logoutAction(ActionEvent event) throws IOexception{
+            client.disconnectLogin();
     }
 
     // You can add other methods to handle additional GUI actions
