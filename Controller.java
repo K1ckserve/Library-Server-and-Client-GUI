@@ -63,10 +63,10 @@ public class Controller {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-        @FXML
-        protected void logoutAction(ActionEvent event) throws IOexception{
-            client.disconnectLogin();
     }
+    @FXML
+    protected void logoutAction(ActionEvent event) throws IOexception{
+        client.disconnectLogin();
 
     // You can add other methods to handle additional GUI actions
 }
