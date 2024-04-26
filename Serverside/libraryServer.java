@@ -199,17 +199,38 @@ public class libraryServer {
                                 } else if (recievedObject instanceof Movie) {
                                     Movie movie = (Movie) recievedObject;
                                     ss.addMovie(movie);
-                                    historyMap.get(use).movies.remove(movie);
+                                    Iterator<Movie> iterator = historyMap.get(use).movies.iterator();
+                                    while (iterator.hasNext()) {
+                                        Movie m = iterator.next();
+                                        if (m.toString().equals(movie.toString())) {
+                                            iterator.remove();
+                                            break;
+                                        }
+                                    }
                                     System.out.println(movie);
                                 } else if (recievedObject instanceof Game) {
                                     Game game = (Game) recievedObject;
                                     ss.addGame(game);
-                                    historyMap.get(use).games.remove(game);
+                                    Iterator<Game> iterator = historyMap.get(use).games.iterator();
+                                    while (iterator.hasNext()) {
+                                        Game g = iterator.next();
+                                        if (g.toString().equals(game.toString())) {
+                                            iterator.remove();
+                                            break;
+                                        }
+                                    }
                                     System.out.println(game);
                                 } else if (recievedObject instanceof AudioBooks) {
                                     AudioBooks audioBooks = (AudioBooks) recievedObject;
                                     ss.addAudioBook(audioBooks);
-                                    historyMap.get(use).audioBooks.remove(audioBooks);
+                                    Iterator<AudioBooks> iterator = historyMap.get(use).audioBooks.iterator();
+                                    while (iterator.hasNext()) {
+                                        AudioBooks a = iterator.next();
+                                        if (a.toString().equals(audioBooks.toString())) {
+                                            iterator.remove();
+                                            break;
+                                        }
+                                    }
                                     System.out.println(audioBooks);
                                 }
                             }
