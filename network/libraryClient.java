@@ -39,6 +39,8 @@ public class libraryClient {
         }
     }
     public void disconnectLogin() throws IOException {
+        oos.writeObject("logout");
+        oos.writeObject("logout");
         socket.close();
     }
     public void connectToServer(String ipAddress, int port) throws IOException {
