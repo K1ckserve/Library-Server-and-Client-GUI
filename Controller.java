@@ -25,7 +25,7 @@ public class Controller {
 
     public void initialize(libraryClient client) throws IOException {
         this.client = client;
-        client.connectToServer("10.145.24.185", 1025);
+        client.connectToServer("192.168.1.200", 1025);
     }
 
     @FXML
