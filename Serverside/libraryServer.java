@@ -79,7 +79,7 @@ public class libraryServer {
                                 loggedIn = true;
                                 oos.writeObject(loggedIn);
                                 System.out.println("User " + username + " has been logged in.");
-                                ClientHandler clientHandler = new ClientHandler(ss, ois, oos, u);
+                                ClientHandler clientHandler = new ClientHandler(clientSocket,ss, ois, oos, u);
                                 Thread t = new Thread(clientHandler); // Wrap ClientHandler in a Thread and start it
                                 sendCatalog(ss, oos);
                                 t.start();
@@ -103,12 +103,14 @@ public class libraryServer {
     class ClientHandler implements Runnable {
 
         private Catalog ss;
+        private Socket clientSocket;
         private final ObjectInputStream ois;
         private final ObjectOutputStream oos;
         private final user use;
         private Catalog userCatalog = new Catalog();
 
-        ClientHandler(Catalog ss, ObjectInputStream ois, ObjectOutputStream oos, user use) throws IOException {
+        ClientHandler(Socket clientSocket,Catalog ss, ObjectInputStream ois, ObjectOutputStream oos, user use) throws IOException {
+            this.clientSocket = clientSocket;
             this.ois = ois;
             this.oos = oos;
             this.ss = ss;
@@ -126,6 +128,10 @@ public class libraryServer {
                         if (datatype.equals("message")) {
                             String message = (String) ois.readObject();
                             System.out.println("RECEIVED: " + message);
+                            if(message.equals("logout")){
+                                clientSocket.close();
+                                break;
+                            }
                             if (message.equals("book")) {
                                 Iterator<Book> iterator = ss.books.iterator();
                                 String message1 = (String) ois.readObject();

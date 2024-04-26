@@ -39,7 +39,7 @@ public class libraryClient {
         }
     }
     public void disconnectLogin() throws IOException {
-        oos.writeObject("logout");
+        oos.writeObject("message");
         oos.writeObject("logout");
         socket.close();
     }
