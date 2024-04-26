@@ -41,6 +41,14 @@ public class MainController implements CatalogUpdateListener {
     public void initialize(libraryClient client) {
         this.client = client;
         user.setText(client.getUser().toString() + "'s catalog");
+        registerCheckBoxDoubleClickHandler(bookVBox);
+        registerCheckBoxDoubleClickHandler(movieVBox);
+        registerCheckBoxDoubleClickHandler(gameVBox);
+        registerCheckBoxDoubleClickHandler(audioVBox);
+        registerCheckBoxDoubleClickHandler(clientbooksVBox);
+        registerCheckBoxDoubleClickHandler(clientmoviesVBox);
+        registerCheckBoxDoubleClickHandler(clientgamesVBox);
+        registerCheckBoxDoubleClickHandler(clientaudiobooksVBox);
     }
     @Override
     public void onCatalogUpdate(Catalog catalog) {
