@@ -191,7 +191,7 @@ public class MainController implements CatalogUpdateListener {
         onClientCatalogUpdate(client.getClientCatalog());
     }
     @FXML
-    protected void logoutAction(ActionEvent event) throws IOException {
+    protected void logoutAction(ActionEvent event) throws IOException, InterruptedException {
         client.disconnectLogin();
     }
 }

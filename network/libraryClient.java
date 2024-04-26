@@ -11,12 +11,14 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class libraryClient {
     private final ReentrantLock lock = new ReentrantLock();
     public Socket socket;
+    public Thread objReader;
     //private PrintWriter writer;
     private Catalog clientCatalog = new Catalog();
     private Catalog catalog = new Catalog();
     private CatalogUpdateListener listener;
     private ObjectInputStream ois;
     private ObjectOutputStream oos;
+    private user use;
 
 //what the fuckl
 
@@ -40,15 +42,13 @@ public class libraryClient {
             }
         }
     }
-    public synchronized void disconnectLogin() throws IOException {
-        lock.lock();
-        try{
-            oos.writeObject("message");
-            oos.writeObject("logout");
-            socket.close();
-        } finally {
-            lock.unlock();
+    public synchronized void disconnectLogin() throws IOException, InterruptedException {
+        if(objReader != null) {
+            objReader.join();
         }
+        oos.writeObject("message");
+        oos.writeObject("logout");
+        socket.close();
     }
     public void connectToServer(String ipAddress, int port) throws IOException {
         socket = new Socket(ipAddress, port);
@@ -58,6 +58,8 @@ public class libraryClient {
     public boolean sendLoginCredentials(String username, String password) throws IOException, ClassNotFoundException {
         oos.writeObject(username);
         oos.writeObject(password);
+        this.use = (user)ois.readObject();
+        System.out.println(use);
         return (boolean) ois.readObject();
     }
     public static void main(String[] args) throws IOException {
@@ -68,6 +70,7 @@ public class libraryClient {
         try {
             System.out.println("network established");
             Thread objReader = new Thread(new reciever (socket,clientCatalog,catalog));
+            this.objReader = objReader;
             objReader.start();
         } catch (IOException ioe) {
             ioe.printStackTrace();

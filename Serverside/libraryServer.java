@@ -76,6 +76,7 @@ public class libraryServer {
                     if(!(username.equals("logout") || password.equals("logout"))) {
                         for (user u : users) {
                             if (u.getUsername().equals(username) && u.getPassword().equals(password)) {
+                                oos.writeObject(u);
                                 loggedIn = true;
                                 oos.writeObject(loggedIn);
                                 System.out.println("User " + username + " has been logged in.");
@@ -129,6 +130,7 @@ public class libraryServer {
                             String message = (String) ois.readObject();
                             System.out.println("RECEIVED: " + message);
                             if(message.equals("logout")){
+                                all.remove(oos);
                                 clientSocket.close();
                                 break;
                             }

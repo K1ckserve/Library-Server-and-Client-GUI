@@ -1,6 +1,8 @@
 package network;
 
-public class user{
+import java.io.Serializable;
+
+public class user implements Serializable {
    private String username;
    private String password;
    public user(String username, String password) {
