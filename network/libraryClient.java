@@ -43,11 +43,10 @@ public class libraryClient {
         oos = new ObjectOutputStream(socket.getOutputStream());
         ois = new ObjectInputStream(socket.getInputStream());
     }
-    public boolean sendLoginCredentials(String username, String password) throws IOException {
-        Thread s = new Thread(->
+    public boolean sendLoginCredentials(String username, String password) throws IOException, ClassNotFoundException {
         oos.writeObject(username);
         oos.writeObject(password);
-        return b;
+        boolean b = (boolean) ois.readObject();
     }
     public static void main(String[] args) throws IOException {
         new libraryClient().setupNetworking();

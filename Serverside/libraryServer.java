@@ -73,6 +73,7 @@ public class libraryServer {
                     String password = (String) ois.readObject();
                     for (user u : users) {
                         if (u.getUsername().equals(username) && u.getPassword().equals(password)) {
+                            oos.writeObject(loggedIn);
                             System.out.println("User " + username + " has been logged in.");
                             ClientHandler clientHandler = new ClientHandler(ss, ois, oos, u);
                             Thread t = new Thread(clientHandler); // Wrap ClientHandler in a Thread and start it
@@ -82,7 +83,7 @@ public class libraryServer {
                             break;
                         }
                     }
-                    oos.writeBoolean(loggedIn);
+                    oos.writeObject(loggedIn);
                 }
 //                if (userPass.containsKey(username)) {
 //                    if (userPass.get(username).equals(password)) {

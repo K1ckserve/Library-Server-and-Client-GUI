@@ -32,7 +32,7 @@ public class Controller {
         boolean loginSuccessful = false;
         try{
             client.connectToServer("192.168.1.200", 1025);
-            loginSuccessful = client.sendLoginCredentials(usernam, passwor);
+            client.sendLoginCredentials(usernam, passwor);
             if (loginSuccessful) {
                 client.setupNetworking();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("Main.fxml"));
@@ -58,6 +58,8 @@ public class Controller {
             }
         } catch(IOException e){
             e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 
