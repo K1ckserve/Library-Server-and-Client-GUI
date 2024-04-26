@@ -4,10 +4,12 @@ import javafx.application.Platform;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class libraryClient {
+    private final ReentrantLock lock = new ReentrantLock();
     public Socket socket;
     //private PrintWriter writer;
     private Catalog clientCatalog = new Catalog();
@@ -38,10 +40,15 @@ public class libraryClient {
             }
         }
     }
-    public void disconnectLogin() throws IOException {
-        oos.writeObject("message");
-        oos.writeObject("logout");
-        socket.close();
+    public synchronized void disconnectLogin() throws IOException {
+        lock.lock();
+        try{
+            oos.writeObject("message");
+            oos.writeObject("logout");
+            socket.close();
+        } finally {
+            lock.unlock();
+        }
     }
     public void connectToServer(String ipAddress, int port) throws IOException {
         socket = new Socket(ipAddress, port);
