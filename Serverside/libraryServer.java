@@ -5,6 +5,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
+import common.*;
 
 public class libraryServer {
 
@@ -14,8 +15,8 @@ public class libraryServer {
     public Map<String, String> userPass = new HashMap<>();
     List<Socket> sockets = new ArrayList<Socket>();
     Catalog ss = new Catalog();
-    private Map<user, Catalog> historyMap = new HashMap<>();
-    public List<user> users = new ArrayList<>();
+    private Map<User, Catalog> historyMap = new HashMap<>();
+    public List<User> users = new ArrayList<>();
     List<ObjectOutputStream> all = new ArrayList<>();
 
     private void setupNetworking() {
@@ -27,19 +28,19 @@ public class libraryServer {
                 Book book = (Book) ois.readObject();
                 Movie movie = (Movie) ois.readObject();
                 Movie movie2 = (Movie) ois.readObject();
-                AudioBooks audiobook = (AudioBooks) ois.readObject();
+                AudioBook audiobook = (AudioBook) ois.readObject();
                 Game game = (Game) ois.readObject();
                 ss.addBook(book);
                 ss.addMovie(movie);
                 ss.addMovie(movie2);
                 ss.addGame(game);
                 ss.addAudioBook(audiobook);
-                user ben = new user("ben", "123");
-                user tan = new user("tan", "456");
+                User ben = new User("ben", "123");
+                User tan = new User("tan", "456");
                 users.add(ben);
                 users.add(tan);
                 userPass.put("ben", "123");
-                for(user u : users){
+                for(User u : users){
                     historyMap.put(u, new Catalog());
                 }
 
@@ -73,7 +74,7 @@ public class libraryServer {
                     String username = (String) ois.readObject();
                     String password = (String) ois.readObject();
                     if(!(username.equals("logout") || password.equals("logout"))) {
-                        for (user u : users) {
+                        for (User u : users) {
                             if (u.getUsername().equals(username) && u.getPassword().equals(password)) {
                                 oos.writeObject(u);
                                 loggedIn = true;
@@ -106,10 +107,10 @@ public class libraryServer {
         private Socket clientSocket;
         private final ObjectInputStream ois;
         private final ObjectOutputStream oos;
-        private final user use;
+        private final User use;
         private Catalog userCatalog = new Catalog();
 
-        ClientHandler(Socket clientSocket,Catalog ss, ObjectInputStream ois, ObjectOutputStream oos, user use) throws IOException {
+        ClientHandler(Socket clientSocket,Catalog ss, ObjectInputStream ois, ObjectOutputStream oos, User use) throws IOException {
             this.clientSocket = clientSocket;
             this.ois = ois;
             this.oos = oos;
@@ -171,10 +172,10 @@ public class libraryServer {
                                     }
                                 }
                             } else if (message.equals("audiobook")) {
-                                Iterator<AudioBooks> iterator = ss.audioBooks.iterator();
+                                Iterator<AudioBook> iterator = ss.audioBooks.iterator();
                                 String message1 = (String) ois.readObject();
                                 while (iterator.hasNext()) {
-                                    AudioBooks a = iterator.next();
+                                    AudioBook a = iterator.next();
                                     if (a.toString().equals(message1)) {
                                         sendAObject(a, oos);
                                         historyMap.get(use).audioBooks.add(a);
@@ -228,12 +229,12 @@ public class libraryServer {
                                         }
                                     }
                                     System.out.println(game);
-                                } else if (recievedObject instanceof AudioBooks) {
-                                    AudioBooks audioBooks = (AudioBooks) recievedObject;
+                                } else if (recievedObject instanceof AudioBook) {
+                                    AudioBook audioBooks = (AudioBook) recievedObject;
                                     ss.addAudioBook(audioBooks);
-                                    Iterator<AudioBooks> iterator = historyMap.get(use).audioBooks.iterator();
+                                    Iterator<AudioBook> iterator = historyMap.get(use).audioBooks.iterator();
                                     while (iterator.hasNext()) {
-                                        AudioBooks a = iterator.next();
+                                        AudioBook a = iterator.next();
                                         if (a.toString().equals(audioBooks.toString())) {
                                             iterator.remove();
                                             break;

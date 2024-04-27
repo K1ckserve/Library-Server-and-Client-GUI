@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import common.*;
 
 public class libraryClient {
     private final ReentrantLock lock = new ReentrantLock();
@@ -18,7 +19,7 @@ public class libraryClient {
     private CatalogUpdateListener listener;
     private ObjectInputStream ois;
     private ObjectOutputStream oos;
-    private user use;
+    private User use;
 
 //what the fuckl
 
@@ -50,7 +51,7 @@ public class libraryClient {
         oos.writeObject("logout");
         socket.close();
     }
-    public user getUser(){
+    public User getUser(){
         return this.use;
     }
     public void connectToServer(String ipAddress, int port) throws IOException {
@@ -61,7 +62,7 @@ public class libraryClient {
     public boolean sendLoginCredentials(String username, String password) throws IOException, ClassNotFoundException {
         oos.writeObject(username);
         oos.writeObject(password);
-        this.use = (user)ois.readObject();
+        this.use = (User)ois.readObject();
         System.out.println(use);
         return (boolean) ois.readObject();
     }
@@ -142,8 +143,8 @@ public class libraryClient {
                             Platform.runLater(() -> {
                                 notifyCatalogClientCatalog();
                             });
-                        } else if (recievedObject instanceof AudioBooks) {
-                            AudioBooks audioBooks = (AudioBooks) recievedObject;
+                        } else if (recievedObject instanceof AudioBook) {
+                            AudioBook audioBooks = (AudioBook) recievedObject;
                             clientStorage.addAudioBook(audioBooks);
                             System.out.println(audioBooks);
                             Platform.runLater(() -> {
