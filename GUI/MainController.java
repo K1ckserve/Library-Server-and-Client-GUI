@@ -40,7 +40,7 @@ public class MainController implements CatalogUpdateListener {
 
     public void initialize(libraryClient client) {
         this.client = client;
-        user.setText(client.getUser().toString() + "'s catalog");
+        user.setText(client.getUser().getUsername() + "'s catalog");
     }
     // Method to show alert with details
     @Override
