@@ -11,6 +11,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import network.*;
+import common.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -66,7 +67,7 @@ public class MainController implements CatalogUpdateListener {
             CheckBox checkBox = new CheckBox(game.toString());
             gameVBox.getChildren().add(checkBox);
         }
-        for(AudioBooks audioBook : client.getCatalog().audioBooks){
+        for(AudioBook audioBook : client.getCatalog().audioBooks){
             CheckBox checkBox = new CheckBox(audioBook.toString());
             audioVBox.getChildren().add(checkBox);
         }
@@ -92,7 +93,7 @@ public class MainController implements CatalogUpdateListener {
                 CheckBox checkBox = new CheckBox(game.toString());
                 clientgamesVBox.getChildren().add(checkBox);
             }
-            for (AudioBooks audioBook : client.getClientCatalog().audioBooks) {
+            for (AudioBook audioBook : client.getClientCatalog().audioBooks) {
                 CheckBox checkBox = new CheckBox(audioBook.toString());
                 clientaudiobooksVBox.getChildren().add(checkBox);
             }
@@ -186,9 +187,9 @@ public class MainController implements CatalogUpdateListener {
             if (node instanceof CheckBox) {
                 CheckBox checkBox = (CheckBox) node;
                 if (checkBox.isSelected()) {
-                    Iterator<AudioBooks> iterator = client.getClientCatalog().audioBooks.iterator();
+                    Iterator<AudioBook> iterator = client.getClientCatalog().audioBooks.iterator();
                     while (iterator.hasNext()) {
-                        AudioBooks a = iterator.next();
+                        AudioBook a = iterator.next();
                         if (a.toString().equals(checkBox.getText())) {
                             client.sendAObject(a);
                             iterator.remove();

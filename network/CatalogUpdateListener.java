@@ -1,4 +1,5 @@
 package network;
+import common.*;
 
 
 public interface CatalogUpdateListener{
