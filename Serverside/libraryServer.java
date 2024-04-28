@@ -12,7 +12,6 @@ public class libraryServer {
     public static void main(String[] args) {
         new libraryServer().setupNetworking();
     }
-    public Map<String, String> userPass = new HashMap<>();
     List<Socket> sockets = new ArrayList<Socket>();
     Catalog ss = new Catalog();
     private Map<User, Catalog> historyMap = new HashMap<>();
