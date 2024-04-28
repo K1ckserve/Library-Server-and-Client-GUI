@@ -22,7 +22,7 @@ public class libraryServer {
     ObjectInputStream fileIn;
     Catalog unchangingCatalog = new Catalog();
 
-    private void setupNetworking() {
+    public void setupNetworking() {
         try {
             ServerSocket server = new ServerSocket(1028);
             Serialization serialization = new Serialization();
