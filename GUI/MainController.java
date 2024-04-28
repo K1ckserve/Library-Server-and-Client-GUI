@@ -118,6 +118,7 @@ public class MainController implements CatalogUpdateListener {
     }
 
     public void onRentAction(javafx.event.ActionEvent actionEvent) throws IOException {
+        mediaPlayer.play();
         for (Node node : bookVBox.getChildren()) {
             if (node instanceof CheckBox) {
                 CheckBox checkBox = (CheckBox) node;
@@ -152,6 +153,7 @@ public class MainController implements CatalogUpdateListener {
         }
     }
     public void onReturnAction(javafx.event.ActionEvent actionEvent) throws IOException, InterruptedException {
+        mediaPlayer.play();
         for (Node node : clientbooksVBox.getChildren()) {
             if (node instanceof CheckBox) {
                 CheckBox checkBox = (CheckBox) node;
