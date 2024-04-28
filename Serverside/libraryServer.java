@@ -29,16 +29,11 @@ public class libraryServer {
             fileIn = serialization.ois;
             fileOut = serialization.initialize();
             deserializeObjects();
-                // Read objects in the exact order they were written
-                for (User u : users) {
-                    historyMap.put(u, new Catalog());
-                }
-
-
-                // Optionally, output the objects to verify they've been read correctly
-
-
-
+            // Read objects in the exact order they were written
+            for (User u : users) {
+                historyMap.put(u, new Catalog());
+            }
+            // Optionally, output the objects to verify they've been read correctly
             while (true) {
                 Socket clientSocket = server.accept();
                 System.out.println("incoming transmission");
@@ -48,41 +43,11 @@ public class libraryServer {
                 ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream());
                 ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream());
                 all.add(oos);
-                boolean loggedIn = false;
-                while(!loggedIn) {
-                    String action = (String) ois.readObject();
-                    String username = (String) ois.readObject();
-                    String password = (String) ois.readObject();
-                    if (action.equals("Reset")) {
-                        serilizeResetPass(username, password);
-                    } else if (action.equals("Login")) {
-                        if (!(username.equals("logout") || password.equals("logout"))) {
-                            for (User u : users) {
-                                if (u.getUsername().equals(username) && u.getPassword().equals(password)) {
-                                    oos.writeObject(u);
-                                    loggedIn = true;
-                                    oos.writeObject(loggedIn);
-                                    System.out.println("User " + username + " has been logged in.");
-                                    ClientHandler clientHandler = new ClientHandler(clientSocket, ss, ois, oos, u);
-                                    Thread t = new Thread(clientHandler); // Wrap ClientHandler in a Thread and start it
-                                    sendCatalog(ss, oos);
-                                    t.start();
-                                    break;
-                                }
-                            }
-                            oos.writeObject(loggedIn);
-                        }
-                        else {
-                            all.remove(oos);
-                            clientSocket.close();
-                            break;
-                        }
-                    }else if(action.equals("New")) {
-                        createUser(username, password);
-                    }
-                }
+                Thread m = new Thread(new loginHandler(ois, oos, clientSocket));
+                m.start();
             }
-        } catch (IOException ioe) {
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -319,7 +284,57 @@ public class libraryServer {
             }
         }
     }
+    class loginHandler implements Runnable {
+        public ObjectInputStream ois;
+        public ObjectOutputStream oos;
+        public Socket clientSocket;
+        public loginHandler (ObjectInputStream ois, ObjectOutputStream oos, Socket clientSocket){
+            this.ois = ois;
+            this.oos = oos;
+            this.clientSocket = clientSocket;
+        }
+        @Override
+        public void run(){
+            try{
+            boolean loggedIn = false;
+            while(!loggedIn) {
+                String action = (String) ois.readObject();
+                String username = (String) ois.readObject();
+                String password = (String) ois.readObject();
+                if (action.equals("Reset")) {
+                    serilizeResetPass(username, password);
+                } else if (action.equals("Login")) {
+                    for (User u : users) {
+                        if (u.getUsername().equals(username) && u.getPassword().equals(password)) {
+                            oos.writeObject(u);
+                            loggedIn = true;
+                            oos.writeObject(loggedIn);
+                            System.out.println("User " + username + " has been logged in.");
+                            ClientHandler clientHandler = new ClientHandler(clientSocket, ss, ois, oos, u);
+                            Thread t = new Thread(clientHandler); // Wrap ClientHandler in a Thread and start it
+                            sendCatalog(ss, oos);
+                            t.start();
+                            t.join();
+                            loggedIn=false;
+                            break;
+                        }
+                    }
+                    oos.writeObject(loggedIn);
+                }else if(action.equals("New")) {
+                    createUser(username, password);
+                }
+            }
+        }catch(IOException e) {
+                throw new RuntimeException(e);
+            }
+            catch(ClassNotFoundException m){
+                throw new RuntimeException(m);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
 
+        }
+    }
     public void sendCatalog(Catalog c, ObjectOutputStream oos) throws IOException {
         for(ObjectOutputStream sen : all){
             sen.writeObject(c);
