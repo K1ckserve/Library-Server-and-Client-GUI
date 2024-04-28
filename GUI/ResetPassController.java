@@ -27,8 +27,8 @@ public class ResetPassController {
         this.client = client;
     }
     protected void resetPassword(ActionEvent event) throws IOException, ClassNotFoundException {
-        String username.getText();
-        String password.getText();
+        String username= username.getText();
+        String password = password.getText();
         client.resetPassword(username, password);
         URL url = Paths.get("./GUI/Login.fxml").toUri().toURL();
         FXMLLoader loader = new FXMLLoader(url);
