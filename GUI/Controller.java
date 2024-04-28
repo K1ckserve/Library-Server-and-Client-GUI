@@ -25,6 +25,8 @@ public class Controller {
     private Button Logout;
     @FXML
     private Button ForgotPassword;
+    @FXML
+    private Button New;
 
     private libraryClient client;
 
@@ -81,6 +83,24 @@ public class Controller {
     }
     @FXML
     protected void forgotPassword(ActionEvent event) throws IOException {
+        URL url = Paths.get("./GUI/ResetPass.fxml").toUri().toURL();
+        FXMLLoader loader = new FXMLLoader(url);
+        loader.setLocation(url);
+        Parent root = loader.load();
+        ResetPassController mainContr = loader.getController();
+        mainContr.initialize(client);
+
+        // Get the current stage
+        Stage stage = (Stage) Login.getScene().getWindow();
+
+        // Set the scene to the next FXML file
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.setTitle("Forgot Password");
+        stage.show();
+    }
+    @FXML
+    protected void newUser(ActionEvent event) throws IOException {
         URL url = Paths.get("./GUI/ResetPass.fxml").toUri().toURL();
         FXMLLoader loader = new FXMLLoader(url);
         loader.setLocation(url);
