@@ -76,6 +76,24 @@ public class Controller {
     protected void logoutAction(ActionEvent event) throws IOException, InterruptedException {
         client.disconnectLogin();
     }
+    @FXML
+    protected void forgotPassword(ActionEvent event) throws IOException {
+        URL url = Paths.get("./GUI/ResetPass.fxml").toUri().toURL();
+        FXMLLoader loader = new FXMLLoader(url);
+        loader.setLocation(url);
+        Parent root = loader.load();
+        MainController mainContr = loader.getController();
+        client.setCatalogUpdateListener(mainContr);
+        mainContr.initialize(client);
 
+        // Get the current stage
+        Stage stage = (Stage) Login.getScene().getWindow();
+
+        // Set the scene to the next FXML file
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.setTitle("Forgot Password");
+        stage.show();
+    }
     // You can add other methods to handle additional GUI actions
 }
