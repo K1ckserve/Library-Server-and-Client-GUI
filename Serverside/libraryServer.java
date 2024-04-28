@@ -24,7 +24,7 @@ public class libraryServer {
 
     private void setupNetworking() {
         try {
-            ServerSocket server = new ServerSocket(1027);
+            ServerSocket server = new ServerSocket(1028);
             Serialization serialization = new Serialization();
             fileIn = serialization.ois;
             fileOut = serialization.initialize();
@@ -305,6 +305,7 @@ public class libraryServer {
                 } else if (action.equals("Login")) {
                     for (User u : users) {
                         if (u.getUsername().equals(username) && u.getPassword().equals(password)) {
+                            oos.reset();
                             oos.writeObject(u);
                             loggedIn = true;
                             oos.writeObject(loggedIn);
