@@ -1,29 +1,31 @@
 package Serverside;
 
+import org.junit.Test;
+
 import static org.junit.Assert.*;
 public class libraryServerTest {
 
-    @org.junit.Test
+    @Test
     public void main() {
     }
 
-    @org.junit.Test
+    @Test
     public void createUser() {
     }
 
-    @org.junit.Test
+    @Test
     public void serilizeResetPass() {
     }
 
-    @org.junit.Test
+    @Test
     public void sendCatalog() {
     }
 
-    @org.junit.Test
+    @Test
     public void sendUserCatalog() {
     }
 
-    @org.junit.Test
+    @Test
     public void sendAObject() {
     }
 }
