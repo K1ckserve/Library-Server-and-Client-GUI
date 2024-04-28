@@ -19,26 +19,24 @@ public class ResetPassController {
     @FXML
     private Button Password;
     @FXML
-    private TextField username;
+    private TextField usernam;
     @FXML
-    private TextField password;
+    private TextField passwor;
     private libraryClient client;
     private void initialize(libraryClient client){
         this.client = client;
     }
     protected void resetPassword(ActionEvent event) throws IOException, ClassNotFoundException {
-        String username= username.getText();
-        String password = password.getText();
+        String username= usernam.getText();
+        String password = passwor.getText();
         client.resetPassword(username, password);
         URL url = Paths.get("./GUI/Login.fxml").toUri().toURL();
         FXMLLoader loader = new FXMLLoader(url);
         loader.setLocation(url);
         Parent root = loader.load();
-        Controller controller = loader.getController();
-
-
+        //Controller controller = loader.getController();
+        Stage primaryStage = (Stage) Password.getScene().getWindow();
         Scene scene = new Scene(root);
-        Stage primaryStage;
         primaryStage.setScene(scene);
         primaryStage.setTitle("Client");
         primaryStage.show();
