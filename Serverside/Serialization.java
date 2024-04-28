@@ -15,10 +15,10 @@ public class Serialization {
         //File f = new File("storage.set");
         //ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(f));
         Book book = new Book("Moby Dick", "Herman Melville", 1, "jfkdj");
-        Movie movie = new Movie("Star Wars: The Empire Rises", "George Lucas");
+        Movie movie = new Movie("Star Wars 5", "George Lucas");
         AudioBook audiobook = new AudioBook("Harry Potter", "JK Rowling", 3, "fjfj");
         Game game = new Game("Sekiro", "Activision", "RPG");
-        Movie movie2 = new Movie("Star Wars: The Return of the Jedi", "George Lucas");
+        Movie movie2 = new Movie("Star Wars 4", "George Lucas");
         User ben = new User("ben", "123");
         User tan = new User("tan", "456");
         oos.writeObject(book);

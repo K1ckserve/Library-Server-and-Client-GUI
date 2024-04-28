@@ -5,7 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import network.libraryClient;
+import network.Client;
 
 import java.net.URL;
 import java.nio.file.Paths;
@@ -23,7 +23,7 @@ public class ClientGUI extends Application {
         loader.setLocation(url);
         Parent root = loader.load();
         Controller controller = loader.getController();
-        libraryClient client = new libraryClient();
+        Client client = new Client();
         controller.initialize(client);
 
         Scene scene = new Scene(root);

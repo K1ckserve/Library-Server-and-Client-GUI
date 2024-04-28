@@ -3,29 +3,27 @@ package src.test.java;
 import Serverside.libraryServer;
 import common.Catalog;
 import common.User;
-import network.libraryClient;
-import org.junit.Before;
+import network.Client;
 import org.junit.Test;
-import org.junit.jupiter.api.Order;
 
 import java.io.IOException;
 
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-public class libraryClientTest {
+public class clientTest {
     private libraryServer server;
-    private libraryClient client;
-    private libraryClient client2;
+    private Client client;
+    private Client client2;
 
-    public libraryClientTest() throws Exception {
+    public clientTest() throws Exception {
         this.server = new libraryServer();
         Thread severThread = new Thread(() -> {
             server.setupNetworking();
         });
         severThread.start();
-        this.client = new libraryClient();
-        this.client2 = new libraryClient();
+        this.client = new Client();
+        this.client2 = new Client();
     }
 
     @Test

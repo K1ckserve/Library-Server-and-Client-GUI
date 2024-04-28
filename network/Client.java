@@ -5,11 +5,10 @@ import javafx.application.Platform;
 import java.io.*;
 import java.net.Socket;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+
 import common.*;
 
-public class libraryClient {
+public class Client {
     private final ReentrantLock lock = new ReentrantLock();
     public Socket socket;
     public Thread objReader;
@@ -23,7 +22,7 @@ public class libraryClient {
 
 //what the fuckl
 
-    public libraryClient() throws IOException {
+    public Client() throws IOException {
     }
 
     public void setCatalogUpdateListener(CatalogUpdateListener listener) {
@@ -80,7 +79,7 @@ public class libraryClient {
         oos.writeObject(password);
     }
     public static void main(String[] args) throws IOException {
-        new libraryClient().setupNetworking();
+        new Client().setupNetworking();
     }
 
     public void setupNetworking() {
@@ -129,7 +128,7 @@ public class libraryClient {
                                 } else {
                                     if (!(cat.books.size() == c.books.size() && cat.movies.size() == c.movies.size() && cat.games.size() == c.games.size() && cat.audioBooks.size() == c.audioBooks.size())) {
                                         cat = (Catalog) recievedObject;
-                                        libraryClient.this.updateCatalog(cat);
+                                        Client.this.updateCatalog(cat);
                                         Platform.runLater(() -> {
                                             notifyCatalogUpdate();
                                         });

@@ -8,7 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import network.libraryClient;
+import network.Client;
 
 import java.io.IOException;
 import java.net.URL;
@@ -28,13 +28,13 @@ public class Controller {
     @FXML
     private Button New;
 
-    private libraryClient client;
+    private Client client;
 
-    public void initialize(libraryClient client) throws IOException {
+    public void initialize(Client client) throws IOException {
         this.client = client;
         client.connectToServer("192.168.1.200", 1028);
     }
-    public void reInitialize(libraryClient client) throws IOException {
+    public void reInitialize(Client client) throws IOException {
         this.client = client;
     }
 

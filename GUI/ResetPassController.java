@@ -11,7 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import network.libraryClient;
+import network.Client;
 
 import java.io.IOException;
 import java.net.URL;
@@ -26,9 +26,9 @@ public class ResetPassController {
     private TextField passwor;
     @FXML
     private ProgressBar Meter;
-    private libraryClient client;
+    private Client client;
 
-    void initialize(libraryClient client) {
+    void initialize(Client client) {
         this.client = client;
 
         // Add a listener to the password field to update the meter

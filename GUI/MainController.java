@@ -55,9 +55,9 @@ public class MainController implements CatalogUpdateListener {
     private MediaPlayer mediaPlayer;
 
 
-    private libraryClient client;
+    private Client client;
 
-    public void initialize(libraryClient client) {
+    public void initialize(Client client) {
         this.client = client;
         user.setText(client.getUser().getUsername() + "'s catalog");
         String soundFile = "./GUI/celly.mp3"; // Specify the path to your sound file

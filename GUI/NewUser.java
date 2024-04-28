@@ -8,7 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import network.libraryClient;
+import network.Client;
 
 import java.io.IOException;
 import java.net.URL;
@@ -21,8 +21,8 @@ public class NewUser {
     private TextField password;
     @FXML
     private Button New;
-    private libraryClient client;
-    public void initialize(libraryClient client){
+    private Client client;
+    public void initialize(Client client){
         this.client = client;
     }
     @FXML
