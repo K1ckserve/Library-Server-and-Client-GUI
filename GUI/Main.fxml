@@ -96,6 +96,6 @@
       <Button fx:id="Return" layoutX="408.0" layoutY="343.0" mnemonicParsing="false" onAction="#onReturnAction" text="Return" />
       <Button fx:id="Logout1" layoutX="14.0" layoutY="368.0" mnemonicParsing="false" onAction="#logoutAction" text="Logout" />
       <TextField fx:id="searchBar" layoutX="104.0" layoutY="9.0" prefHeight="25.0" prefWidth="121.0" />
-      <Button fx:id="search" layoutX="227.0" layoutY="9.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" text="Search" />
+      <Button fx:id="search" layoutX="227.0" layoutY="9.0" mnemonicParsing="false" onAction="#searchOnAction" prefHeight="25.0" prefWidth="52.0" text="Search" />
    </children>
 </AnchorPane>
