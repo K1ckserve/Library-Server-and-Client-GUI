@@ -3,6 +3,7 @@ package network;
 import javafx.application.Platform;
 
 import java.io.*;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -52,7 +53,7 @@ public class Client {
         return this.use;
     }
     public void connectToServer(String ipAddress, int port) throws IOException {
-        socket = new Socket(ipAddress, port);
+        socket = new Socket(InetAddress.getLocalHost (), port);
         oos = new ObjectOutputStream(socket.getOutputStream());
         ois = new ObjectInputStream(socket.getInputStream());
     }
