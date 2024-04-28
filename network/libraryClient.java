@@ -61,9 +61,12 @@ public class libraryClient {
         oos.writeObject("Login");
         oos.writeObject(username);
         oos.writeObject(password);
-        Object o = ois.readObject();
-        this.use = (User)o;
-        System.out.println(use);
+        String info = (String)ois.readObject();
+        if(info.equals("success")){
+            Object o = ois.readObject();
+            this.use = (User)o;
+            System.out.println(use);
+        }
         return (boolean) ois.readObject();
     }
     public void createNewUser(String user, String pass) throws IOException {

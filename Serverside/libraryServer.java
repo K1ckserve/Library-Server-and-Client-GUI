@@ -308,6 +308,7 @@ public class libraryServer {
                     for (User u : users) {
                         if (u.getUsername().equals(username) && u.getPassword().equals(password)) {
                             oos.reset();
+                            oos.writeObject("success");
                             oos.writeObject(u);
                             loggedIn = true;
                             oos.writeObject(loggedIn);
@@ -324,6 +325,7 @@ public class libraryServer {
                         }
                     }
                     if(!reset) {
+                        oos.writeObject("failure");
                         oos.writeObject(loggedIn);
                     }
                     reset=false;
