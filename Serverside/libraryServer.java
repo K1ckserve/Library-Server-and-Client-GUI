@@ -18,11 +18,14 @@ public class libraryServer {
     private Map<User, Catalog> historyMap = new HashMap<>();
     public List<User> users = new ArrayList<>();
     List<ObjectOutputStream> all = new ArrayList<>();
+    ObjectOutputStream fileOut;
+    Catalog unchangingCatalog = new Catalog();
 
     private void setupNetworking() {
         try {
             ServerSocket server = new ServerSocket(1025);
             File f = new File("storage.set");
+            ObjectOutputStream fileOut = new ObjectOutputStream(new FileOutputStream(f));
             try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f))) {
                 // Read objects in the exact order they were written
                 Book book = (Book) ois.readObject();
@@ -35,6 +38,11 @@ public class libraryServer {
                 ss.addMovie(movie2);
                 ss.addGame(game);
                 ss.addAudioBook(audiobook);
+                unchangingCatalog.addBook(book);
+                unchangingCatalog.addMovie(movie);
+                unchangingCatalog.addMovie(movie2);
+                unchangingCatalog.addAudioBook(audiobook);
+                unchangingCatalog.addGame(game);
                 User ben = new User("ben", "123");
                 User tan = new User("tan", "456");
                 users.add(ben);
@@ -71,27 +79,32 @@ public class libraryServer {
                 all.add(oos);
                 boolean loggedIn = false;
                 while(!loggedIn) {
+                    String action = (String) ois.readObject();
                     String username = (String) ois.readObject();
                     String password = (String) ois.readObject();
-                    if(!(username.equals("logout") || password.equals("logout"))) {
-                        for (User u : users) {
-                            if (u.getUsername().equals(username) && u.getPassword().equals(password)) {
-                                oos.writeObject(u);
-                                loggedIn = true;
-                                oos.writeObject(loggedIn);
-                                System.out.println("User " + username + " has been logged in.");
-                                ClientHandler clientHandler = new ClientHandler(clientSocket,ss, ois, oos, u);
-                                Thread t = new Thread(clientHandler); // Wrap ClientHandler in a Thread and start it
-                                sendCatalog(ss, oos);
-                                t.start();
-                                break;
+                    if (action.equals("Reset")) {
+                        serilizeResetPass(username, password);
+                    } else if (action.equals("Login")) {
+                        if (!(username.equals("logout") || password.equals("logout"))) {
+                            for (User u : users) {
+                                if (u.getUsername().equals(username) && u.getPassword().equals(password)) {
+                                    oos.writeObject(u);
+                                    loggedIn = true;
+                                    oos.writeObject(loggedIn);
+                                    System.out.println("User " + username + " has been logged in.");
+                                    ClientHandler clientHandler = new ClientHandler(clientSocket, ss, ois, oos, u);
+                                    Thread t = new Thread(clientHandler); // Wrap ClientHandler in a Thread and start it
+                                    sendCatalog(ss, oos);
+                                    t.start();
+                                    break;
+                                }
                             }
+                            oos.writeObject(loggedIn);
+                        } else {
+                            all.remove(oos);
+                            clientSocket.close();
+                            break;
                         }
-                        oos.writeObject(loggedIn);
-                    }else{
-                        all.remove(oos);
-                        clientSocket.close();
-                        break;
                     }
                 }
             }
@@ -99,6 +112,23 @@ public class libraryServer {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
+    }
+    public void serilizeResetPass(String username, String password) throws IOException {
+        for (User u1 : users) {
+            if(u1.getUsername().equals(username)) {
+                //set user to new password
+            }
+        }
+        File f = new File("storage.set");
+        fileOut.writeObject(unchangingCatalog.books.get(0)); // Write a book object to maintain the order
+        fileOut.writeObject(unchangingCatalog.movies.get(0)); // Write a movie object to maintain the order
+        fileOut.writeObject(unchangingCatalog.movies.get(1)); // Write another movie object to maintain the order
+        fileOut.writeObject(unchangingCatalog.audioBooks.get(0)); // Write an audiobook object to maintain the order
+        fileOut.writeObject(unchangingCatalog.games.get(0)); // Write a game object to maintain the order
+        for(User user : users) {
+            fileOut.writeObject(user); // Write each user object
+        }
+        // Optionally, update other relevant data
     }
 
     class ClientHandler implements Runnable {

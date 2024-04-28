@@ -60,11 +60,17 @@ public class libraryClient {
         ois = new ObjectInputStream(socket.getInputStream());
     }
     public boolean sendLoginCredentials(String username, String password) throws IOException, ClassNotFoundException {
+        oos.writeObject("login");
         oos.writeObject(username);
         oos.writeObject(password);
         this.use = (User)ois.readObject();
         System.out.println(use);
         return (boolean) ois.readObject();
+    }
+    public void resetPassword(String username, String password) throws IOException, ClassNotFoundException {
+        oos.writeObject("Reset");
+        oos.writeObject(username);
+        oos.writeObject(password);
     }
     public static void main(String[] args) throws IOException {
         new libraryClient().setupNetworking();
