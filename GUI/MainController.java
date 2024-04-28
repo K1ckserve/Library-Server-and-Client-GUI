@@ -223,4 +223,7 @@ public class MainController implements CatalogUpdateListener {
         primaryStage.setTitle("Client");
         primaryStage.show();
     }
+    @FXML
+    private void searchOnAction(ActionEvent event){
+    }
 }
