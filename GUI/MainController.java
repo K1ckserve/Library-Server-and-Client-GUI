@@ -199,5 +199,16 @@ public class MainController implements CatalogUpdateListener {
     @FXML
     protected void logoutAction(ActionEvent event) throws IOException, InterruptedException {
         client.disconnectLogin();
+        URL url = Paths.get("./GUI/Login.fxml").toUri().toURL();
+        FXMLLoader loader = new FXMLLoader(url);
+        loader.setLocation(url);
+        Parent root = loader.load();
+        Controller controller = loader.getController();
+        controller.reInitialize(client);
+        Stage primaryStage = (Stage) New.getScene().getWindow();
+        Scene scene = new Scene(root);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Client");
+        primaryStage.show();
     }
 }
