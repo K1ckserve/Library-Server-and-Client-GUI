@@ -77,10 +77,7 @@ public class Controller {
             throw new RuntimeException(e);
         }
     }
-    @FXML
-    protected void logoutAction(ActionEvent event) throws IOException, InterruptedException {
-        client.disconnectLogin();
-    }
+
     @FXML
     protected void forgotPassword(ActionEvent event) throws IOException {
         URL url = Paths.get("./GUI/ResetPass.fxml").toUri().toURL();
