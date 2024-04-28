@@ -14,7 +14,7 @@
       <Text layoutX="225.0" layoutY="130.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter your current username" />
       <TextField fx:id="usernam" layoutX="226.0" layoutY="153.0" />
       <Button fx:id="Password" layoutX="254.0" layoutY="343.0" mnemonicParsing="false" onAction="#resetPassword" text="Reset Password" />
-      <ProgressBar layoutX="204.0" layoutY="297.0" prefWidth="200.0" progress="0.0" />
+      <ProgressBar fx:id="Meter" layoutX="204.0" layoutY="297.0" prefWidth="200.0" progress="0.0" />
       <Text layoutX="251.0" layoutY="293.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password Strength" />
    </children>
 </AnchorPane>
