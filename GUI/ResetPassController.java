@@ -23,9 +23,10 @@ public class ResetPassController {
     @FXML
     private TextField passwor;
     private libraryClient client;
-    private void initialize(libraryClient client){
+    void initialize(libraryClient client){
         this.client = client;
     }
+    @FXML
     protected void resetPassword(ActionEvent event) throws IOException, ClassNotFoundException {
         String username= usernam.getText();
         String password = passwor.getText();

@@ -13,6 +13,7 @@
       <Text layoutX="226.0" layoutY="119.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" />
       <Text layoutX="228.0" layoutY="196.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password" />
       <Button fx:id="Logout" layoutX="14.0" layoutY="361.0" mnemonicParsing="false" onAction="#logoutAction" text="Quit" />
-      <Button fx:id="ForgotPassword" layoutX="301.0" layoutY="285.0" mnemonicParsing="false" onAction="#forgotPassword" text="Forgot Password" />
+      <Button fx:id="ForgotPassword" layoutX="452.0" layoutY="349.0" mnemonicParsing="false" onAction="#forgotPassword" text="Forgot Password" />
+      <Button fx:id="New" layoutX="323.0" layoutY="285.0" mnemonicParsing="false" text="Sign Up" />
    </children>
 </AnchorPane>

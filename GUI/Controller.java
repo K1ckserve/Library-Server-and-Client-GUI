@@ -82,8 +82,7 @@ public class Controller {
         FXMLLoader loader = new FXMLLoader(url);
         loader.setLocation(url);
         Parent root = loader.load();
-        MainController mainContr = loader.getController();
-        client.setCatalogUpdateListener(mainContr);
+        ResetPassController mainContr = loader.getController();
         mainContr.initialize(client);
 
         // Get the current stage

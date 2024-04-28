@@ -19,55 +19,32 @@ public class libraryServer {
     public List<User> users = new ArrayList<>();
     List<ObjectOutputStream> all = new ArrayList<>();
     ObjectOutputStream fileOut;
+    ObjectInputStream fileIn;
     Catalog unchangingCatalog = new Catalog();
 
     private void setupNetworking() {
         try {
             ServerSocket server = new ServerSocket(1025);
-            File f = new File("storage.set");
-            ObjectOutputStream fileOut = new ObjectOutputStream(new FileOutputStream(f));
-            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f))) {
+            Serialization serialization = new Serialization();
+            fileIn = serialization.ois;
+            fileOut = serialization.initialize();
+            deserializeObjects();
                 // Read objects in the exact order they were written
-                Book book = (Book) ois.readObject();
-                Movie movie = (Movie) ois.readObject();
-                Movie movie2 = (Movie) ois.readObject();
-                AudioBook audiobook = (AudioBook) ois.readObject();
-                Game game = (Game) ois.readObject();
-                ss.addBook(book);
-                ss.addMovie(movie);
-                ss.addMovie(movie2);
-                ss.addGame(game);
-                ss.addAudioBook(audiobook);
-                unchangingCatalog.addBook(book);
-                unchangingCatalog.addMovie(movie);
-                unchangingCatalog.addMovie(movie2);
-                unchangingCatalog.addAudioBook(audiobook);
-                unchangingCatalog.addGame(game);
+
                 User ben = new User("ben", "123");
                 User tan = new User("tan", "456");
                 users.add(ben);
                 users.add(tan);
                 userPass.put("ben", "123");
-                for(User u : users){
+                for (User u : users) {
                     historyMap.put(u, new Catalog());
                 }
 
 
-
                 // Optionally, output the objects to verify they've been read correctly
-                System.out.println("Book: " + book.toString());
-                System.out.println("Movie: " + movie.toString());
-                System.out.println("Movie 2: " + movie2.toString());
-                System.out.println("AudioBook: " + audiobook.toString());
-                System.out.println("Game: " + game.toString());
 
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                System.out.println("Class not found exception. Make sure all object classes are available.");
-                e.printStackTrace();
-            }
+
             while (true) {
                 Socket clientSocket = server.accept();
                 System.out.println("incoming transmission");
@@ -125,10 +102,44 @@ public class libraryServer {
         fileOut.writeObject(unchangingCatalog.movies.get(1)); // Write another movie object to maintain the order
         fileOut.writeObject(unchangingCatalog.audioBooks.get(0)); // Write an audiobook object to maintain the order
         fileOut.writeObject(unchangingCatalog.games.get(0)); // Write a game object to maintain the order
-        for(User user : users) {
-            fileOut.writeObject(user); // Write each user object
-        }
+//        for(User user : users) { dont do this yet
+//            fileOut.writeObject(user); // Write each user object
+//        }
         // Optionally, update other relevant data
+    }
+    private void deserializeObjects() throws IOException, ClassNotFoundException {
+        while (true) {
+            try {
+                Object obj = fileIn.readObject();
+                if (obj instanceof Book) {
+                    Book book = (Book) obj;
+                    unchangingCatalog.addBook(book);
+                    ss.addBook(book);
+                    System.out.println(book);
+                } else if (obj instanceof Movie) {
+                    Movie movie = (Movie) obj;
+                    unchangingCatalog.addMovie(movie);
+                    ss.addMovie(movie);
+                    System.out.println(movie);
+                } else if (obj instanceof AudioBook) {
+                    AudioBook audiobook = (AudioBook) obj;
+                    unchangingCatalog.addAudioBook(audiobook);
+                    ss.addAudioBook(audiobook);
+                    System.out.println(audiobook);
+                } else if (obj instanceof Game) {
+                    Game game = (Game) obj;
+                    unchangingCatalog.addGame(game);
+                    ss.addGame(game);
+                    System.out.println(game);
+                } else if (obj instanceof User) {
+                    User user = (User) obj;
+                    users.add(user);
+                    System.out.println(user);
+                }
+            }catch(EOFException f){
+                break;
+            }
+        }
     }
 
     class ClientHandler implements Runnable {
@@ -140,7 +151,7 @@ public class libraryServer {
         private final User use;
         private Catalog userCatalog = new Catalog();
 
-        ClientHandler(Socket clientSocket,Catalog ss, ObjectInputStream ois, ObjectOutputStream oos, User use) throws IOException {
+        ClientHandler(Socket clientSocket, Catalog ss, ObjectInputStream ois, ObjectOutputStream oos, User use) throws IOException {
             this.clientSocket = clientSocket;
             this.ois = ois;
             this.oos = oos;
@@ -159,7 +170,7 @@ public class libraryServer {
                         if (datatype.equals("message")) {
                             String message = (String) ois.readObject();
                             System.out.println("RECEIVED: " + message);
-                            if(message.equals("logout")){
+                            if (message.equals("logout")) {
                                 all.remove(oos);
                                 clientSocket.close();
                                 break;

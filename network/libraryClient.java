@@ -60,7 +60,7 @@ public class libraryClient {
         ois = new ObjectInputStream(socket.getInputStream());
     }
     public boolean sendLoginCredentials(String username, String password) throws IOException, ClassNotFoundException {
-        oos.writeObject("login");
+        oos.writeObject("Login");
         oos.writeObject(username);
         oos.writeObject(password);
         this.use = (User)ois.readObject();
