@@ -1,5 +1,6 @@
 package GUI;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -224,6 +225,26 @@ public class MainController implements CatalogUpdateListener {
         primaryStage.show();
     }
     @FXML
-    private void searchOnAction(ActionEvent event){
+    private void searchOnAction(ActionEvent event) {
+        String searchTerm = searchBar.getText().trim().toLowerCase(); // Get the search term from the text field
+        if (searchTerm.isEmpty()) {
+            return; // If the search term is empty, do nothing
+        }
+        selectCheckBoxBySearchTerm(bookVBox.getChildren(), searchTerm);
+        selectCheckBoxBySearchTerm(movieVBox.getChildren(), searchTerm);
+        selectCheckBoxBySearchTerm(gameVBox.getChildren(), searchTerm);
+        selectCheckBoxBySearchTerm(audioVBox.getChildren(), searchTerm);
     }
+
+    private void selectCheckBoxBySearchTerm(ObservableList<Node> nodes, String searchTerm) {
+        for (Node node : nodes) {
+            if (node instanceof CheckBox) {
+                CheckBox checkBox = (CheckBox) node;
+                if (checkBox.getText().toLowerCase().contains(searchTerm)) {
+                    checkBox.setSelected(true); // Select the checkbox if its text contains the search term
+                }
+            }
+        }
+    }
+
 }
