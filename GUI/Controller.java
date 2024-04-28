@@ -23,6 +23,8 @@ public class Controller {
     private TextField password;
     @FXML
     private Button Logout;
+    @FXML
+    private Button ForgotPassword;
 
     private libraryClient client;
 
