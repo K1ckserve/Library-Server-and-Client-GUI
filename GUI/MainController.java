@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -242,9 +243,13 @@ public class MainController implements CatalogUpdateListener {
                 CheckBox checkBox = (CheckBox) node;
                 if (checkBox.getText().toLowerCase().contains(searchTerm)) {
                     checkBox.setSelected(true); // Select the checkbox if its text contains the search term
+                    // Expand the parent titled pane of the checkbox
+                    TitledPane titledPane = (TitledPane) checkBox.getParent().getParent().getParent().getParent(); // Get the parent titled pane
+                    titledPane.setExpanded(true); // Expand the titled pane
                 }
             }
         }
     }
+
 
 }
