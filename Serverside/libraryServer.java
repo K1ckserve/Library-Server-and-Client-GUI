@@ -71,17 +71,40 @@ public class libraryServer {
                                 }
                             }
                             oos.writeObject(loggedIn);
-                        } else {
+                        }
+                        else {
                             all.remove(oos);
                             clientSocket.close();
                             break;
                         }
+                    }else if(action.equals("New")) {
+                        createUser(username, password);
                     }
                 }
             }
         } catch (IOException ioe) {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
+        }
+    }
+    public void createUser(String username, String password) throws IOException {
+        User newUser = new User(username, password);
+        users.add(newUser);
+        fileOut.reset();
+        for(Book b : unchangingCatalog.books) {
+            fileOut.writeObject(b);
+        }
+        for(Movie m : unchangingCatalog.movies) {
+            fileOut.writeObject(m);
+        }
+        for(Game g : unchangingCatalog.games) {
+            fileOut.writeObject(g);
+        }
+        for(AudioBook a : unchangingCatalog.audioBooks) {
+            fileOut.writeObject(a);
+        }
+        for(User user : users) { //dont do this yet
+            fileOut.writeObject(user); // Write each user object
         }
     }
     public void serilizeResetPass(String username, String password) throws IOException {
@@ -91,16 +114,21 @@ public class libraryServer {
             }
         }
         fileOut.reset();
-        fileOut.writeObject(unchangingCatalog.books.get(0)); // Write a book object to maintain the order
-        fileOut.writeObject(unchangingCatalog.movies.get(0)); // Write a movie object to maintain the order
-        System.out.println("made it here");
-        fileOut.writeObject(unchangingCatalog.movies.get(1)); // Write another movie object to maintain the order
-        fileOut.writeObject(unchangingCatalog.audioBooks.get(0)); // Write an audiobook object to maintain the order
-        fileOut.writeObject(unchangingCatalog.games.get(0)); // Write a game object to maintain the order
+        for(Book b : unchangingCatalog.books) {
+            fileOut.writeObject(b);
+        }
+        for(Movie m : unchangingCatalog.movies) {
+            fileOut.writeObject(m);
+        }
+        for(Game g : unchangingCatalog.games) {
+            fileOut.writeObject(g);
+        }
+        for(AudioBook a : unchangingCatalog.audioBooks) {
+            fileOut.writeObject(a);
+        }
         for(User user : users) { //dont do this yet
             fileOut.writeObject(user); // Write each user object
         }
-        // Optionally, update other relevant data
     }
     private void deserializeObjects() throws IOException, ClassNotFoundException {
         while (true) {

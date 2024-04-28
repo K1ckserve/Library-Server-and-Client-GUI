@@ -67,6 +67,11 @@ public class libraryClient {
         System.out.println(use);
         return (boolean) ois.readObject();
     }
+    public void createNewUser(String user, String pass) throws IOException {
+        oos.writeObject("New");
+        oos.writeObject(user);
+        oos.writeObject(pass);
+    }
     public void resetPassword(String username, String password) throws IOException, ClassNotFoundException {
         oos.writeObject("Reset");
         oos.writeObject(username);
