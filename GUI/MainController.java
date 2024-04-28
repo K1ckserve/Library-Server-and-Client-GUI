@@ -2,15 +2,21 @@ package GUI;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import network.*;
 import common.*;
 
 import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.util.Iterator;
 
 public class MainController implements CatalogUpdateListener {
@@ -205,7 +211,7 @@ public class MainController implements CatalogUpdateListener {
         Parent root = loader.load();
         Controller controller = loader.getController();
         controller.reInitialize(client);
-        Stage primaryStage = (Stage) New.getScene().getWindow();
+        Stage primaryStage = (Stage) Logout1.getScene().getWindow();
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Client");
