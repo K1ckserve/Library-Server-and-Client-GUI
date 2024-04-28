@@ -35,7 +35,8 @@ public class ResetPassController {
         FXMLLoader loader = new FXMLLoader(url);
         loader.setLocation(url);
         Parent root = loader.load();
-        //Controller controller = loader.getController();
+        Controller controller = loader.getController();
+        controller.reInitialize(client);
         Stage primaryStage = (Stage) Password.getScene().getWindow();
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);

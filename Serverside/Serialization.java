@@ -19,11 +19,15 @@ public class Serialization {
         AudioBook audiobook = new AudioBook("Harry Potter", "JK Rowling", 3, "fjfj");
         Game game = new Game("Sekiro", "Activision", "RPG");
         Movie movie2 = new Movie("Star Wars: The Return of the Jedi", "George Lucas");
+        User ben = new User("ben", "123");
+        User tan = new User("tan", "456");
         oos.writeObject(book);
         oos.writeObject(movie);
         oos.writeObject(movie2);
         oos.writeObject(audiobook);
         oos.writeObject(game);
+        oos.writeObject(ben);
+        oos.writeObject(tan);
         oos.close();
         return oos;
     }

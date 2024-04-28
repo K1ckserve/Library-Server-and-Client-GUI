@@ -32,6 +32,9 @@ public class Controller {
         this.client = client;
         client.connectToServer("192.168.1.200", 1025);
     }
+    public void reInitialize(libraryClient client) throws IOException {
+        this.client = client;
+    }
 
     @FXML
     protected void loginButtonAction(ActionEvent event) throws IOException {

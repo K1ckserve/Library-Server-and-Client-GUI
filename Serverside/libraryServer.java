@@ -30,12 +30,6 @@ public class libraryServer {
             fileOut = serialization.initialize();
             deserializeObjects();
                 // Read objects in the exact order they were written
-
-                User ben = new User("ben", "123");
-                User tan = new User("tan", "456");
-                users.add(ben);
-                users.add(tan);
-                userPass.put("ben", "123");
                 for (User u : users) {
                     historyMap.put(u, new Catalog());
                 }
@@ -93,16 +87,15 @@ public class libraryServer {
     public void serilizeResetPass(String username, String password) throws IOException {
         for (User u1 : users) {
             if(u1.getUsername().equals(username)) {
-                //set user to new password
+                u1.setPassword(password);
             }
         }
-        File f = new File("storage.set");
-        fileOut.writeObject(unchangingCatalog.books.get(0)); // Write a book object to maintain the order
-        fileOut.writeObject(unchangingCatalog.movies.get(0)); // Write a movie object to maintain the order
-        fileOut.writeObject(unchangingCatalog.movies.get(1)); // Write another movie object to maintain the order
-        fileOut.writeObject(unchangingCatalog.audioBooks.get(0)); // Write an audiobook object to maintain the order
-        fileOut.writeObject(unchangingCatalog.games.get(0)); // Write a game object to maintain the order
-//        for(User user : users) { dont do this yet
+//        fileOut.writeObject(unchangingCatalog.books.get(0)); // Write a book object to maintain the order
+//        fileOut.writeObject(unchangingCatalog.movies.get(0)); // Write a movie object to maintain the order
+//        fileOut.writeObject(unchangingCatalog.movies.get(1)); // Write another movie object to maintain the order
+//        fileOut.writeObject(unchangingCatalog.audioBooks.get(0)); // Write an audiobook object to maintain the order
+//        fileOut.writeObject(unchangingCatalog.games.get(0)); // Write a game object to maintain the order
+//        for(User user : users) { //dont do this yet
 //            fileOut.writeObject(user); // Write each user object
 //        }
         // Optionally, update other relevant data
