@@ -32,7 +32,7 @@ public class Controller {
 
     public void initialize(Client client) throws IOException {
         this.client = client;
-        client.connectToServer("192.168.1.200", 1028);
+        client.connectToServer("192.168.1.200", 1029);
     }
     public void reInitialize(Client client) throws IOException {
         this.client = client;
