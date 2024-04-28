@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -42,6 +43,11 @@ public class MainController implements CatalogUpdateListener {
     private VBox clientgamesVBox;
     @FXML
     private Text user;
+    @FXML
+    private TextField searchBar;
+    @FXML
+    private Button search;
+
     private libraryClient client;
 
     public void initialize(libraryClient client) {
