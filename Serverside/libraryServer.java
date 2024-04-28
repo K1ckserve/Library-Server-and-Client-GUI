@@ -159,8 +159,6 @@ public class libraryServer {
                             String message = (String) ois.readObject();
                             System.out.println("RECEIVED: " + message);
                             if (message.equals("logout")) {
-                                all.remove(oos);
-                                clientSocket.close();
                                 break;
                             }
                             if (message.equals("book")) {

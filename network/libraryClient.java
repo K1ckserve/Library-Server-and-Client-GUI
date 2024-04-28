@@ -44,12 +44,9 @@ public class libraryClient {
         }
     }
     public synchronized void disconnectLogin() throws IOException, InterruptedException {
-        if(objReader != null) {
-            objReader.join();
-        }
         oos.writeObject("message");
         oos.writeObject("logout");
-        socket.close();
+        objReader.interrupt();
     }
     public User getUser(){
         return this.use;
