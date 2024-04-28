@@ -90,14 +90,16 @@ public class libraryServer {
                 u1.setPassword(password);
             }
         }
-//        fileOut.writeObject(unchangingCatalog.books.get(0)); // Write a book object to maintain the order
-//        fileOut.writeObject(unchangingCatalog.movies.get(0)); // Write a movie object to maintain the order
-//        fileOut.writeObject(unchangingCatalog.movies.get(1)); // Write another movie object to maintain the order
-//        fileOut.writeObject(unchangingCatalog.audioBooks.get(0)); // Write an audiobook object to maintain the order
-//        fileOut.writeObject(unchangingCatalog.games.get(0)); // Write a game object to maintain the order
-//        for(User user : users) { //dont do this yet
-//            fileOut.writeObject(user); // Write each user object
-//        }
+        fileOut.reset();
+        fileOut.writeObject(unchangingCatalog.books.get(0)); // Write a book object to maintain the order
+        fileOut.writeObject(unchangingCatalog.movies.get(0)); // Write a movie object to maintain the order
+        System.out.println("made it here");
+        fileOut.writeObject(unchangingCatalog.movies.get(1)); // Write another movie object to maintain the order
+        fileOut.writeObject(unchangingCatalog.audioBooks.get(0)); // Write an audiobook object to maintain the order
+        fileOut.writeObject(unchangingCatalog.games.get(0)); // Write a game object to maintain the order
+        for(User user : users) { //dont do this yet
+            fileOut.writeObject(user); // Write each user object
+        }
         // Optionally, update other relevant data
     }
     private void deserializeObjects() throws IOException, ClassNotFoundException {

@@ -28,7 +28,6 @@ public class Serialization {
         oos.writeObject(game);
         oos.writeObject(ben);
         oos.writeObject(tan);
-        oos.close();
         return oos;
     }
 }
