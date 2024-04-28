@@ -49,6 +49,8 @@ public class MainController implements CatalogUpdateListener {
     private TextField searchBar;
     @FXML
     private Button search;
+    private MediaPlayer mediaPlayer;
+
 
     private libraryClient client;
 
