@@ -101,11 +101,11 @@ public class Controller {
     }
     @FXML
     protected void newUser(ActionEvent event) throws IOException {
-        URL url = Paths.get("./GUI/ResetPass.fxml").toUri().toURL();
+        URL url = Paths.get("./GUI/NewUser.fxml").toUri().toURL();
         FXMLLoader loader = new FXMLLoader(url);
         loader.setLocation(url);
         Parent root = loader.load();
-        ResetPassController mainContr = loader.getController();
+        NewUser mainContr = loader.getController();
         mainContr.initialize(client);
 
         // Get the current stage
