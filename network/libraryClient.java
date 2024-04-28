@@ -63,7 +63,8 @@ public class libraryClient {
         oos.writeObject("Login");
         oos.writeObject(username);
         oos.writeObject(password);
-        this.use = (User)ois.readObject();
+        Object o = ois.readObject();
+        this.use = (User)o;
         System.out.println(use);
         return (boolean) ois.readObject();
     }

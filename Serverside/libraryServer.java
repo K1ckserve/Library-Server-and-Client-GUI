@@ -17,7 +17,7 @@ public class libraryServer {
     Catalog ss = new Catalog();
     private Map<User, Catalog> historyMap = new HashMap<>();
     public List<User> users = new ArrayList<>();
-    List<ObjectOutputStream> all = new ArrayList<>();
+    public List<ObjectOutputStream> all = new ArrayList<>();
     ObjectOutputStream fileOut;
     ObjectInputStream fileIn;
     Catalog unchangingCatalog = new Catalog();
@@ -42,8 +42,8 @@ public class libraryServer {
                 //BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream());
                 ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream());
-                all.add(oos);
                 Thread m = new Thread(new loginHandler(ois, oos, clientSocket));
+                //all.add(oos);
                 m.start();
             }
         } catch (IOException e) {
@@ -312,8 +312,9 @@ public class libraryServer {
                             System.out.println("User " + username + " has been logged in.");
                             ClientHandler clientHandler = new ClientHandler(clientSocket, ss, ois, oos, u);
                             Thread t = new Thread(clientHandler); // Wrap ClientHandler in a Thread and start it
-                            sendCatalog(ss, oos);
                             t.start();
+                            all.add(oos);
+                            sendCatalog(ss, oos);
                             t.join();
                             loggedIn=false;
                             break;
