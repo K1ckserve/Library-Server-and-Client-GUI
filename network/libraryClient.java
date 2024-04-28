@@ -101,7 +101,7 @@ public class libraryClient {
         return clientCatalog;
     }
     class reciever implements Runnable {
-        Socket socket;
+        Socket socket;//please
         Catalog clientStorage;
         Catalog cat;
         public reciever (Socket socket, Catalog clientStorage, Catalog cat) throws IOException {
