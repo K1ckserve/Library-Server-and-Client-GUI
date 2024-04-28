@@ -1,6 +1,6 @@
 package src.test.java;
 
-import Serverside.libraryServer;
+import Serverside.Server;
 import common.Catalog;
 import common.User;
 import network.Client;
@@ -12,12 +12,12 @@ import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 public class clientTest {
-    private libraryServer server;
+    private Server server;
     private Client client;
     private Client client2;
 
     public clientTest() throws Exception {
-        this.server = new libraryServer();
+        this.server = new Server();
         Thread severThread = new Thread(() -> {
             server.setupNetworking();
         });

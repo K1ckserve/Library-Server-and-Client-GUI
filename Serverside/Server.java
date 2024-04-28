@@ -7,10 +7,10 @@ import java.net.Socket;
 import java.util.*;
 import common.*;
 
-public class libraryServer {
+public class Server {
 
     public static void main(String[] args) {
-        new libraryServer().setupNetworking();
+        new Server().setupNetworking();
     }
     List<Socket> sockets = new ArrayList<Socket>();
     Catalog ss = new Catalog();

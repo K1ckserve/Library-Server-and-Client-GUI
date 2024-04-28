@@ -223,7 +223,7 @@ public class MainController implements CatalogUpdateListener {
     @FXML
     protected void logoutAction(ActionEvent event) throws IOException, InterruptedException {
         client.disconnectLogin();
-        URL url = Paths.get("./GUI/Login.fxml").toUri().toURL();
+        URL url = Paths.get("src/main/resources/Login.fxml").toUri().toURL();
         FXMLLoader loader = new FXMLLoader(url);
         loader.setLocation(url);
         Parent root = loader.load();
