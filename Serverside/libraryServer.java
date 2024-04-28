@@ -159,6 +159,7 @@ public class libraryServer {
                             String message = (String) ois.readObject();
                             System.out.println("RECEIVED: " + message);
                             if (message.equals("logout")) {
+                                oos.writeObject("die");
                                 all.remove(oos);
                                 break;
                             }
@@ -296,6 +297,7 @@ public class libraryServer {
         public void run(){
             try{
             boolean loggedIn = false;
+            boolean reset= false;
             while(!loggedIn) {
                 String action = (String) ois.readObject();
                 String username = (String) ois.readObject();
@@ -317,10 +319,14 @@ public class libraryServer {
                             sendCatalog(ss, oos);
                             t.join();
                             loggedIn=false;
+                            reset=true;
                             break;
                         }
                     }
-                    oos.writeObject(loggedIn);
+                    if(!reset) {
+                        oos.writeObject(loggedIn);
+                    }
+                    reset=false;
                 }else if(action.equals("New")) {
                     createUser(username, password);
                 }

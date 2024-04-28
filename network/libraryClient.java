@@ -46,7 +46,8 @@ public class libraryClient {
     public synchronized void disconnectLogin() throws IOException, InterruptedException {
         oos.writeObject("message");
         oos.writeObject("logout");
-        objReader.interrupt();
+        objReader.join();
+        catalog = new Catalog();
     }
     public User getUser(){
         return this.use;
@@ -109,61 +110,66 @@ public class libraryClient {
         }
         @Override
         public void run() {
-            try {
-                while(true){
-                    Object recievedObject =  ois.readObject();
-                    if(recievedObject != null) {
-                        if (recievedObject instanceof Catalog) {
-                            Catalog c = (Catalog) recievedObject;
-                            String serOrClient = (String) ois.readObject();
-                            if(serOrClient.equals("user")) {
-                                clientStorage.copy(c);
+            synchronized (this) {
+                try {
+                    while (true) {
+                        Object recievedObject = ois.readObject();
+                        if (recievedObject != null) {
+                            if (recievedObject instanceof Catalog) {
+                                Catalog c = (Catalog) recievedObject;
+                                String serOrClient = (String) ois.readObject();
+                                if (serOrClient.equals("user")) {
+                                    clientStorage.copy(c);
+                                    Platform.runLater(() -> {
+                                        notifyCatalogClientCatalog();
+                                    });
+                                } else {
+                                    if (!(cat.books.size() == c.books.size() && cat.movies.size() == c.movies.size() && cat.games.size() == c.games.size() && cat.audioBooks.size() == c.audioBooks.size())) {
+                                        cat = (Catalog) recievedObject;
+                                        libraryClient.this.updateCatalog(cat);
+                                        Platform.runLater(() -> {
+                                            notifyCatalogUpdate();
+                                        });
+                                    }
+                                }
+                            } else if (recievedObject instanceof Book) {
+                                Book book = (Book) recievedObject;
+                                clientStorage.addBook(book);
+                                System.out.println(book);
                                 Platform.runLater(() -> {
                                     notifyCatalogClientCatalog();
                                 });
-                            }
-                            else {
-                                if (!(cat.books.size() == c.books.size() && cat.movies.size() == c.movies.size() && cat.games.size() == c.games.size() && cat.audioBooks.size() == c.audioBooks.size())) {
-                                    cat = (Catalog) recievedObject;
-                                    libraryClient.this.updateCatalog(cat);
-                                    Platform.runLater(() -> {
-                                        notifyCatalogUpdate();
-                                    });
+                            } else if (recievedObject instanceof Movie) {
+                                Movie movie = (Movie) recievedObject;
+                                clientStorage.addMovie(movie);
+                                System.out.println(movie);
+                                Platform.runLater(() -> {
+                                    notifyCatalogClientCatalog();
+                                });
+                            } else if (recievedObject instanceof Game) {
+                                Game game = (Game) recievedObject;
+                                clientStorage.addGame(game);
+                                System.out.println(game);
+                                Platform.runLater(() -> {
+                                    notifyCatalogClientCatalog();
+                                });
+                            } else if (recievedObject instanceof AudioBook) {
+                                AudioBook audioBooks = (AudioBook) recievedObject;
+                                clientStorage.addAudioBook(audioBooks);
+                                System.out.println(audioBooks);
+                                Platform.runLater(() -> {
+                                    notifyCatalogClientCatalog();
+                                });
+                            }else if (recievedObject instanceof String){
+                                if(recievedObject.equals("die")){
+                                    break;
                                 }
                             }
-                        } else if (recievedObject instanceof Book) {
-                            Book book = (Book) recievedObject;
-                            clientStorage.addBook(book);
-                            System.out.println(book);
-                            Platform.runLater(() -> {
-                                notifyCatalogClientCatalog();
-                            });
-                        } else if (recievedObject instanceof Movie) {
-                            Movie movie = (Movie) recievedObject;
-                            clientStorage.addMovie(movie);
-                            System.out.println(movie);
-                            Platform.runLater(() -> {
-                                notifyCatalogClientCatalog();
-                            });
-                        } else if (recievedObject instanceof Game) {
-                            Game game = (Game) recievedObject;
-                            clientStorage.addGame(game);
-                            System.out.println(game);
-                            Platform.runLater(() -> {
-                                notifyCatalogClientCatalog();
-                            });
-                        } else if (recievedObject instanceof AudioBook) {
-                            AudioBook audioBooks = (AudioBook) recievedObject;
-                            clientStorage.addAudioBook(audioBooks);
-                            System.out.println(audioBooks);
-                            Platform.runLater(() -> {
-                                notifyCatalogClientCatalog();
-                            });
                         }
                     }
+                } catch (IOException | ClassNotFoundException e) {
+                    throw new RuntimeException(e);
                 }
-            } catch (IOException | ClassNotFoundException e) {
-                throw new RuntimeException(e);
             }
         }
     }
