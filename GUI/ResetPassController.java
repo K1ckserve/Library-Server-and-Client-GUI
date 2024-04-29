@@ -28,7 +28,7 @@ public class ResetPassController {
     private ProgressBar Meter;
     private Client client;
 
-    void initialize(Client client) {
+    public void initialize(Client client) {
         this.client = client;
 
         // Add a listener to the password field to update the meter
