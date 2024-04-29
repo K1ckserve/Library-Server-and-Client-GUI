@@ -1,4 +1,4 @@
-package src.main.GUI;
+package GUI;
 
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;

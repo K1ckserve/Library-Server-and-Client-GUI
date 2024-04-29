@@ -1,4 +1,4 @@
-package src.main.GUI;
+package GUI;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -32,7 +32,7 @@ public class Controller {
 
     public void initialize(Client client) throws IOException {
         this.client = client;
-        client.connectToServer("192.168.1.200", 6578);
+        client.connectToServer("192.168.1.200", 3578);
     }
     public void reInitialize(Client client) throws IOException {
         this.client = client;
@@ -114,5 +114,5 @@ public class Controller {
         stage.setTitle("Forgot Password");
         stage.show();
     }
-    // You can add other methods to handle additional src.main.GUI actions
+    // You can add other methods to handle additional GUI actions
 }
