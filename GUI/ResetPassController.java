@@ -67,7 +67,7 @@ public class ResetPassController {
         String password = passwor.getText();
 
         client.resetPassword(username, password);
-        URL url = Paths.get("src/main/resources/Login.fxml").toUri().toURL();
+        URL url = Paths.get("GUI/Login.fxml").toUri().toURL();
         FXMLLoader loader = new FXMLLoader(url);
         loader.setLocation(url);
         Parent root = loader.load();

@@ -30,7 +30,7 @@ public class NewUser {
         String use = username.getText();
         String pass = password.getText();
         client.createNewUser(use, pass);
-        URL url = Paths.get("src/main/resources/Login.fxml").toUri().toURL();
+        URL url = Paths.get("GUI/Login.fxml").toUri().toURL();
         FXMLLoader loader = new FXMLLoader(url);
         loader.setLocation(url);
         Parent root = loader.load();
