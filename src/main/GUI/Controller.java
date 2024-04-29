@@ -1,4 +1,4 @@
-package GUI;
+package src.main.GUI;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -114,5 +114,5 @@ public class Controller {
         stage.setTitle("Forgot Password");
         stage.show();
     }
-    // You can add other methods to handle additional GUI actions
+    // You can add other methods to handle additional src.main.GUI actions
 }

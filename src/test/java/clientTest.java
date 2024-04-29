@@ -28,8 +28,8 @@ public class clientTest {
 
     @Test
     public void connectToServer() throws IOException, ClassNotFoundException {
-        assertDoesNotThrow(() -> client.connectToServer("192.168.1.200", 1028));
-        assertDoesNotThrow(() -> client2.connectToServer("192.168.1.200", 1028));
+        assertDoesNotThrow(() -> client.connectToServer("192.168.1.200", 7578));
+        assertDoesNotThrow(() -> client2.connectToServer("192.168.1.200", 7578));
         client.createNewUser("austin", "ooo");
         client.resetPassword("austin", "123");
 

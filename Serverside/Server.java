@@ -23,7 +23,7 @@ public class Server {
 
     public void setupNetworking() {
         try {
-            ServerSocket server = new ServerSocket(6578);
+            ServerSocket server = new ServerSocket(7578);
             Serialization serialization = new Serialization();
             fileIn = serialization.ois;
             fileOut = serialization.initialize();
