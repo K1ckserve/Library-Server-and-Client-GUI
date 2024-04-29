@@ -18,6 +18,7 @@ public class ClientGUI extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        System.out.println(getClass().getClassLoader().getResource("./GUI/Login.fxml"));
         URL url = Paths.get("./GUI/Login.fxml").toUri().toURL();
 //        FXMLLoader fxmlLoader = new FXMLLoader();
 //        fxmlLoader.setLocation(getClass().getResource("Login.fxml"));
